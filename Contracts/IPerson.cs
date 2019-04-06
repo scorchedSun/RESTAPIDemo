@@ -1,5 +1,4 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 
 namespace Contracts
 {
@@ -7,8 +6,7 @@ namespace Contracts
     {
         string Name { get; }
         string LastName { get; }
-        string ZipCode { get; }
-        string City { get; }
+        IAddress Address { get; }
         Color FavouriteColour { get; }
     }
 }
