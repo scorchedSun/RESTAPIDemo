@@ -13,7 +13,7 @@ namespace Converters.Tests
         private readonly IConverter<(int, string), IPerson> personConverter;
         private readonly IConverter<string, IAddress> addressConverter;
         private readonly IConverter<string, Color> colourConverter;
-        private readonly IPersonWithIDBuilder personBuilder;
+        private readonly IPersonBuilder personBuilder;
 
         public PersonConverterTest()
         {

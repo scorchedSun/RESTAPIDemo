@@ -6,7 +6,7 @@ using Contracts;
 
 namespace Models.Builders
 {
-    public sealed class PersonBuilder : IPersonBuilder
+    public sealed class PersonBuilder : IFinalPersonBuilder
     {
         private int id;
         private string name;
@@ -16,7 +16,7 @@ namespace Models.Builders
 
         private PersonBuilder() {}
 
-        public static IPersonWithIDBuilder Create() => new PersonBuilder();
+        public static IPersonBuilder Create() => new PersonBuilder();
 
         public IPerson Build()
         {
@@ -29,7 +29,7 @@ namespace Models.Builders
             return this;
         }
 
-        public IPersonBuilder WithFavouriteColour(Color colour)
+        public IFinalPersonBuilder WithFavouriteColour(Color colour)
         {
             this.colour = colour;
             return this;

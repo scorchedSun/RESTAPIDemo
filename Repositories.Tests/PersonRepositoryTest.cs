@@ -64,7 +64,7 @@ namespace Repositories.Tests
 
         private IAddress CreateTestAddress()
         {
-            IAddressWithZipCodeBuilder addressBuilder = AddressBuilder.Create();
+            IAddressBuilder addressBuilder = AddressBuilder.Create();
             return addressBuilder
                 .WithZipCode("32423")
                 .WithCity("Test City")
@@ -73,7 +73,7 @@ namespace Repositories.Tests
 
         private IPerson CreateTestPerson(int id, Color colour)
         {
-            IPersonWithIDBuilder personBuilder = PersonBuilder.Create();
+            IPersonBuilder personBuilder = PersonBuilder.Create();
             return personBuilder
                 .WithID(id)
                 .WithName("test")

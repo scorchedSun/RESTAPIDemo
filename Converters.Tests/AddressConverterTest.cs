@@ -9,7 +9,7 @@ namespace Converters.Tests
     [TestClass]
     public class AddressConverterTest
     {
-        private readonly IAddressWithZipCodeBuilder addressBuilder;
+        private readonly IAddressBuilder addressBuilder;
         private readonly IConverter<string, IAddress> addressConverter;
 
         public AddressConverterTest()

@@ -8,11 +8,11 @@ namespace Converters
     {
         private readonly IConverter<string, Color> colourConverter;
         private readonly IConverter<string, IAddress> addressConverter;
-        private readonly IPersonWithIDBuilder personBuilder;
+        private readonly IPersonBuilder personBuilder;
 
         public PersonConverter(IConverter<string, Color> colourConverter,
                                IConverter<string, IAddress> addressConverter,
-                               IPersonWithIDBuilder personBuilder)
+                               IPersonBuilder personBuilder)
         {
             this.colourConverter = colourConverter;
             this.addressConverter = addressConverter;

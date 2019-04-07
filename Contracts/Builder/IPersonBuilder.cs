@@ -2,7 +2,7 @@
 
 namespace Contracts
 {
-    public interface IPersonWithIDBuilder
+    public interface IPersonBuilder
     {
         IPersonWithNameBuilder WithID(int id);
     }
@@ -24,11 +24,11 @@ namespace Contracts
 
     public interface IPersonWithFavouriteColourBuilder
     {
-        IPersonBuilder WithFavouriteColour(Color colour);
+        IFinalPersonBuilder WithFavouriteColour(Color colour);
     }
 
-    public interface IPersonBuilder
-        : IPersonWithIDBuilder, IPersonWithNameBuilder, IPersonWithLastNameBuilder, IPersonWithAddressBuilder, IPersonWithFavouriteColourBuilder
+    public interface IFinalPersonBuilder
+        : IPersonBuilder, IPersonWithNameBuilder, IPersonWithLastNameBuilder, IPersonWithAddressBuilder, IPersonWithFavouriteColourBuilder
     {
         IPerson Build();
     }

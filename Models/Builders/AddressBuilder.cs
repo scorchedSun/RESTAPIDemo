@@ -5,18 +5,18 @@ using System.Text;
 
 namespace Models.Builders
 {
-    public sealed class AddressBuilder : IAddressBuilder
+    public sealed class AddressBuilder : IFinalAddressBuilder
     {
         private string zipCode;
         private string city;
 
         private AddressBuilder() {}
 
-        public static IAddressWithZipCodeBuilder Create() => new AddressBuilder();
+        public static IAddressBuilder Create() => new AddressBuilder();
 
         public IAddress Build() => new Address(zipCode, city);
 
-        public IAddressBuilder WithCity(string city)
+        public IFinalAddressBuilder WithCity(string city)
         {
             this.city = city;
             return this;
