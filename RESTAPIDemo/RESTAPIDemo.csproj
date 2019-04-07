@@ -14,4 +14,11 @@
     <PackageReference Include="Ninject" Version="3.3.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Converters\Converters.csproj" />
+    <ProjectReference Include="..\CSVDataSource\CSVDataSource.csproj" />
+    <ProjectReference Include="..\Models\Models.csproj" />
+    <ProjectReference Include="..\Repositories\Repositories.csproj" />
+  </ItemGroup>
+
 </Project>

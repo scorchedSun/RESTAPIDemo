@@ -1,21 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using Contracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace RESTAPIDemo.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class PersonsController : Controller
     {
+        private readonly IPersonRepository repository;
+
+        public PersonsController(IPersonRepository repository) => this.repository = repository;
+
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+        public OkObjectResult Get() => Ok(Json(repository.GetAll()));
 
         // GET api/values/5
         [HttpGet("{id}")]
