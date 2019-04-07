@@ -12,21 +12,12 @@ namespace Repositories.Tests
     [TestClass]
     public class PersonRepositoryTest
     {
-        private const int personID = 1;
-        private const int invalidPersonID = -1;
-        private readonly Color favouriteColour = Color.Blue;
-        private readonly TestablePersonDataSource dataSource = new TestablePersonDataSource();
-
-        public IPersonRepository CreateRepository()
-        {
-            dataSource.WriteAll(new List<IPerson> { CreateTestPerson(personID, favouriteColour), CreateTestPerson(2, Color.Black) });
-            return new PersonRepository(dataSource);
-        }
+        private readonly TestablePersonDataSource dataSource = TestablePersonDataSource.Create();
 
         [TestMethod]
         public void PersonRepository_LoadFromCSVDataSource_Succeeds()
         {
-            IPersonRepository repository = CreateRepository();
+            IPersonRepository repository = new PersonRepository(dataSource);
 
             IList<IPerson> persons = repository.GetAll();
 
@@ -36,9 +27,9 @@ namespace Repositories.Tests
         [TestMethod]
         public void PersonRepository_GetPersonByValidID_Succeeds()
         {
-            IPersonRepository repository = CreateRepository();
+            IPersonRepository repository = new PersonRepository(dataSource);
 
-            IPerson person = repository.Get(personID);
+            IPerson person = repository.Get(TestablePersonDataSource.ExistingID);
 
             Assert.IsNotNull(person);
         }
@@ -47,40 +38,19 @@ namespace Repositories.Tests
         [ExpectedException(typeof(PersonDoesNotExistException))]
         public void PersonRepository_GetPersonByInvalidID_ThrowsPersonDoesNotExistException()
         {
-            IPersonRepository repository = CreateRepository();
-            repository.Get(invalidPersonID);
+            IPersonRepository repository = new PersonRepository(dataSource);
+            repository.Get(TestablePersonDataSource.InvalidID);
         }
 
         [TestMethod]
         public void PersonRepository_GetPersonsByFavouriteColour_Succeeds()
         {
-            IPersonRepository repository = CreateRepository();
+            IPersonRepository repository = new PersonRepository(dataSource);
 
-            IList<IPerson> persons = repository.GetByFavouriteColour(favouriteColour);
+            IList<IPerson> persons = repository.GetByFavouriteColour(TestablePersonDataSource.ValidColour);
 
             Assert.AreEqual(1, persons.Count);
-            Assert.AreEqual(personID, persons.First().ID);
-        }
-
-        private IAddress CreateTestAddress()
-        {
-            IAddressBuilder addressBuilder = AddressBuilder.Create();
-            return addressBuilder
-                .WithZipCode("32423")
-                .WithCity("Test City")
-                .Build();
-        }
-
-        private IPerson CreateTestPerson(int id, Color colour)
-        {
-            IPersonBuilder personBuilder = PersonBuilder.Create();
-            return personBuilder
-                .WithID(id)
-                .WithName("test")
-                .WithLastName("tester")
-                .WithAddress(CreateTestAddress())
-                .WithFavouriteColour(colour)
-                .Build();
+            Assert.AreEqual(TestablePersonDataSource.ExistingID, persons[0].ID);
         }
     }
 }
