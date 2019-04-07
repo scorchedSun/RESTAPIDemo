@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RESTAPIDemo.Facades;
+using Utils;
 using Utils.Exceptions;
 
 namespace RESTAPIDemo.Controllers
@@ -19,15 +21,15 @@ namespace RESTAPIDemo.Controllers
 
         // GET api/persons
         [HttpGet]
-        public OkObjectResult Get() => Ok(repository.GetAll().Select(person => new PersonFacade(person)));
+        public OkObjectResult Get() => Ok(ApplyFacade(repository.GetAll()));
 
-        // GET api/values/5
+        // GET api/persons/5
         [HttpGet("{id}")]
         public ObjectResult Get(int id)
         {
             try
             {
-                return Ok(Json(new PersonFacade(repository.Get(id))));
+                return Ok(ApplyFacade(repository.Get(id)));
             }
             catch (PersonDoesNotExistException doesntExist)
             {
@@ -39,22 +41,24 @@ namespace RESTAPIDemo.Controllers
             }
         }
 
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody] string value)
+        // GET api/persons/color/blue
+        [HttpGet("color/{name}")]
+        public ObjectResult Get(string name)
         {
+            Color colour;
+            try
+            {
+                colour = ColourMap.GetColourByName(name);
+            }
+            catch (InvalidColourNameException invalidName)
+            {
+                return BadRequest(invalidName.Message);
+            }
+
+            return Ok(ApplyFacade(repository.GetByFavouriteColour(colour)));
         }
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        private IList<PersonFacade> ApplyFacade(IList<IPerson> persons) => persons.Select(ApplyFacade).ToList();
+        private PersonFacade ApplyFacade(IPerson person) => new PersonFacade(person);
     }
 }

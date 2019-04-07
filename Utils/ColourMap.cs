@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using Utils.Exceptions;
@@ -24,6 +25,12 @@ namespace Utils
             return Map[code];
         }
 
+        public static Color GetColourByName(string name)
+        {
+            if (!ColourWithNameExists(name)) throw new InvalidColourNameException(name);
+            return Map.Values.Single(v => v.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+        }
+
         public static string GetCodeFor(Color colour)
         {
             if (!IsSupportedColour(colour)) throw new UnsupportedColourException(colour);
@@ -34,5 +41,6 @@ namespace Utils
 
         private static bool IsValidColourCode(string code) => Map.ContainsKey(code);
         private static bool IsSupportedColour(Color colour) => Map.Any(kvp => kvp.Value == colour);
+        private static bool ColourWithNameExists(string name) => Map.Values.Any(v => v.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
     }
 }
