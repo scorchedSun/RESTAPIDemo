@@ -92,16 +92,13 @@ namespace RESTAPIDemo
             }
 
             // This is where our bindings are configurated
-            kernel.Bind<IPerson>().To(typeof(Person));
-            kernel.Bind<IAddress>().To(typeof(Address));
             kernel.Bind<IConverter<string, IAddress>>().To(typeof(AddressConverter));
             kernel.Bind<IConverter<string, Color>>().To(typeof(ColourConverter));
             kernel.Bind<IConverter<(int, string), IPerson>>().To(typeof(PersonConverter));
             kernel.Bind<IPersonBuilder>().ToMethod(_ => PersonBuilder.Create());
             kernel.Bind<IAddressBuilder>().ToMethod(_ => AddressBuilder.Create());
-            kernel.Bind<IDataSource<IPerson>>()
-                .To(personDataSource)
-                .WithConstructorArgument("filePath", dataSourcePath);
+            kernel.Bind<IPhysicalDataSource>().ToMethod(_ => new PhysicalDataSource(dataSourcePath));
+            kernel.Bind<IDataSource<IPerson>>().To(personDataSource);
             kernel.Bind<IPersonRepository>().To(typeof(PersonRepository));
 
             // Cross-wire required framework services

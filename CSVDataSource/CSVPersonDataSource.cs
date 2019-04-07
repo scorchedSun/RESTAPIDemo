@@ -8,22 +8,24 @@ namespace CSVDataSource
 {
     public class CSVPersonDataSource : IDataSource<IPerson>
     {
-        private readonly string filePath;
+        private readonly IPhysicalDataSource physicalDataSource;
+        private string FilePath => physicalDataSource.FilePath;
+
         private readonly IConverter<(int, string), IPerson> converter;
         private readonly IList<(int, string)> toConvert = new List<(int, string)>();
 
-        public CSVPersonDataSource(string filePath, IConverter<(int, string), IPerson> converter)
+        public CSVPersonDataSource(IPhysicalDataSource physicalDataSource, IConverter<(int, string), IPerson> converter)
         {
-            if (!File.Exists(filePath))
-                throw new ArgumentException($"Can't create a data source for the file '{filePath}' since it doesn't exist.");
-            this.filePath = filePath;
+            this.physicalDataSource = physicalDataSource;
+            if (!File.Exists(FilePath))
+                throw new ArgumentException($"Can't create a data source for the file '{FilePath}' since it doesn't exist.");
             this.converter = converter;
         }
 
         public IList<IPerson> LoadAll()
         {
             toConvert.Clear();
-            return converter.Convert(ProcessLines(File.ReadAllLines(filePath)));
+            return converter.Convert(ProcessLines(File.ReadAllLines(FilePath)));
         }
 
         private IList<(int, string)> ProcessLines(string[] lines)
@@ -37,6 +39,6 @@ namespace CSVDataSource
             return toConvert;
         }
 
-        public void WriteAll(IList<IPerson> entries) => File.WriteAllLines(filePath, converter.Convert(entries).Select(entry => entry.Item2 + ";"));
+        public void WriteAll(IList<IPerson> entries) => File.WriteAllLines(FilePath, converter.Convert(entries).Select(entry => entry.Item2 + ";"));
     }
 }
