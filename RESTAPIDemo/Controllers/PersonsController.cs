@@ -21,7 +21,7 @@ namespace RESTAPIDemo.Controllers
 
         // GET api/persons
         [HttpGet]
-        public OkObjectResult Get() => Ok(ApplyFacade(repository.GetAll()));
+        public OkObjectResult Get() => Ok(ApplyAdapter(repository.GetAll()));
 
         // GET api/persons/5
         [HttpGet("{id}")]
@@ -29,7 +29,7 @@ namespace RESTAPIDemo.Controllers
         {
             try
             {
-                return Ok(ApplyFacade(repository.Get(id)));
+                return Ok(ApplyAdapter(repository.Get(id)));
             }
             catch (PersonDoesNotExistException doesntExist)
             {
@@ -55,10 +55,10 @@ namespace RESTAPIDemo.Controllers
                 return BadRequest(invalidName.Message);
             }
 
-            return Ok(ApplyFacade(repository.GetByFavouriteColour(colour)));
+            return Ok(ApplyAdapter(repository.GetByFavouriteColour(colour)));
         }
 
-        private IList<PersonFacade> ApplyFacade(IList<IPerson> persons) => persons.Select(ApplyFacade).ToList();
-        private PersonFacade ApplyFacade(IPerson person) => new PersonFacade(person);
+        private IList<PersonJSONAdapter> ApplyAdapter(IList<IPerson> persons) => persons.Select(ApplyAdapter).ToList();
+        private PersonJSONAdapter ApplyAdapter(IPerson person) => new PersonJSONAdapter(person);
     }
 }
