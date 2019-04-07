@@ -1,5 +1,4 @@
 ﻿using Contracts;
-using Models;
 using System;
 
 namespace Converters
@@ -7,6 +6,10 @@ namespace Converters
     public class AddressConverter : Converter<string, IAddress>
     {
         private const int NumberOfParts = 2;
+
+        private readonly IWithZipCodeAddressBuilder addressBuilder;
+
+        public AddressConverter(IWithZipCodeAddressBuilder addressBuilder) => this.addressBuilder = addressBuilder;
 
         public override IAddress Convert(string toConvert)
         {
@@ -16,7 +19,10 @@ namespace Converters
             if (parts.Length != NumberOfParts)
                     throw new FormatException($"The address provided '{toConvert}' isn't formatted correctly. Excpected 2 entries separated by an whitespace.");
 
-            return new Address(parts[0], parts[1]);
+            return addressBuilder
+                .WithZipCode(parts[0])
+                .WithCity(parts[1])
+                .Build();
         }
 
         public override string Convert(IAddress toConvert)

@@ -1,5 +1,4 @@
 ﻿using Contracts;
-using Models;
 using System;
 using System.Drawing;
 
@@ -9,15 +8,15 @@ namespace Converters
     {
         private readonly IConverter<string, Color> colourConverter;
         private readonly IConverter<string, IAddress> addressConverter;
+        private readonly IWithIDPersonBuilder personBuilder;
 
         public PersonConverter(IConverter<string, Color> colourConverter,
-                               IConverter<string, IAddress> addressConverter)
+                               IConverter<string, IAddress> addressConverter,
+                               IWithIDPersonBuilder personBuilder)
         {
-            if (colourConverter is null) throw new ArgumentNullException(nameof(colourConverter));
-            if (addressConverter is null) throw new ArgumentNullException(nameof(addressConverter));
-
             this.colourConverter = colourConverter;
             this.addressConverter = addressConverter;
+            this.personBuilder = personBuilder;
         }
 
         public override IPerson Convert((int id, string data) toConvert)
@@ -27,12 +26,13 @@ namespace Converters
             string[] parts = toConvert.data.Split(new[] { ", " }, StringSplitOptions.None);
             if (parts.Length != 4)
                 throw new FormatException(nameof(toConvert));
-
-            return new Person(toConvert.id,
-                              parts[0],
-                              parts[1],
-                              addressConverter.Convert(parts[2]),
-                              colourConverter.Convert(parts[3]));
+            return personBuilder
+                .WithID(toConvert.id)
+                .WithName(parts[0])
+                .WithLastName(parts[1])
+                .WithAddress(addressConverter.Convert(parts[2]))
+                .WithFavouriteColour(colourConverter.Convert(parts[3]))
+                .Build();
         }
 
         public override (int id, string data) Convert(IPerson toConvert)

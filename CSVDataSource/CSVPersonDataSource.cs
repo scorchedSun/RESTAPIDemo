@@ -10,6 +10,7 @@ namespace CSVDataSource
     {
         private readonly string filePath;
         private readonly IConverter<(int, string), IPerson> converter;
+        private readonly IList<(int, string)> toConvert = new List<(int, string)>();
 
         public CSVPersonDataSource(string filePath, IConverter<(int, string), IPerson> converter)
         {
@@ -21,20 +22,19 @@ namespace CSVDataSource
 
         public IList<IPerson> LoadAll()
         {
-            IList<(int, string)> toConvert = new List<(int, string)>();
+            toConvert.Clear();
+            return converter.Convert(ProcessLines(File.ReadAllLines(filePath)));
+        }
 
-            int lineNumber = 1;
-            foreach (string line in File.ReadAllLines(filePath))
+        private IList<(int, string)> ProcessLines(string[] lines)
+        {
+            for (int i = 0; i < lines.Length; i++)
             {
-                if (line.Equals(string.Empty)) continue;
-
-                string trimmedLine = line.Trim(';');
-                if (trimmedLine.Count(c => c == ',') == 3)
-                    toConvert.Add((lineNumber, trimmedLine));
-                lineNumber++;
+                string line = lines[i].Trim(';');
+                if (!line.Equals(string.Empty))
+                    toConvert.Add((i + 1, line));
             }
-
-            return converter.Convert(toConvert);
+            return toConvert;
         }
 
         public void WriteAll(IList<IPerson> entries) => File.WriteAllLines(filePath, converter.Convert(entries).Select(entry => entry.Item2 + ";"));

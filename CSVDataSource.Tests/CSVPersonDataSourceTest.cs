@@ -1,6 +1,7 @@
 using Contracts;
 using Converters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Models.Builders;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,14 +25,22 @@ namespace CSVDataSource.Tests
             "Gerber, Gerda, 76535 Woanders, 3",
             "Klaussen, Klaus, 43246 Hierach, 2"
         };
+        private readonly IConverter<(int, string), IPerson> personConverter;
+
+        public CSVPersonDataSourceTest()
+        {
+            personConverter = new PersonConverter(
+                new ColourConverter(),
+                new AddressConverter(AddressBuilder.Create()),
+                PersonBuilder.Create());
+        }
 
         [TestMethod]
         public void CSVPersonDataSource_ReadingValidCSV_Succeeds()
         {
             string filePath = Path.GetTempFileName() + ".csv";
             File.WriteAllLines(filePath, testData.Select(entry => entry + ";"));
-            PersonConverter personConverter = new PersonConverter(new ColourConverter(), new AddressConverter());
-            CSVPersonDataSource personDataSource = new CSVPersonDataSource(filePath, personConverter);
+            IDataSource<IPerson> personDataSource = new CSVPersonDataSource(filePath, personConverter);
 
             IList<IPerson> persons = personDataSource.LoadAll();
 
@@ -46,13 +55,11 @@ namespace CSVDataSource.Tests
             string filePath = Path.GetRandomFileName();
             Assert.IsFalse(File.Exists(filePath));
 
-            new CSVPersonDataSource(filePath, new PersonConverter(new ColourConverter(), new AddressConverter())).LoadAll();
+            new CSVPersonDataSource(filePath, personConverter).LoadAll();
         }
 
         private void AssertPersonsWereReadCorrectly(IList<IPerson> persons)
-        {
-            PersonConverter personConverter = new PersonConverter(new ColourConverter(), new AddressConverter());
-
+        { 
             foreach (var person in persons)
             {
                 (int id, string data) = personConverter.Convert(person);

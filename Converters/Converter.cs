@@ -4,14 +4,14 @@ using System.Linq;
 
 namespace Converters
 {
-    public abstract class Converter<TSource, TTarget> : IConverter<TSource, TTarget>
+    public abstract class Converter<T1, T2> : IConverter<T1, T2>
     {
-        public abstract TTarget Convert(TSource toConvert);
+        public abstract T2 Convert(T1 toConvert);
 
-        public IList<TTarget> Convert(IList<TSource> toConvert) => toConvert.Select(Convert).ToList();
+        public IList<T2> Convert(IList<T1> toConvert) => toConvert.Select(Convert).ToList();
 
-        public abstract TSource Convert(TTarget toConvert);
+        public abstract T1 Convert(T2 toConvert);
 
-        public IList<TSource> Convert(IList<TTarget> toConvert) => toConvert.Select(Convert).ToList();
+        public IList<T1> Convert(IList<T2> toConvert) => toConvert.Select(Convert).ToList();
     }
 }

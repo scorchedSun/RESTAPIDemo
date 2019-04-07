@@ -8,7 +8,7 @@ namespace Models
 
         public string City{ get; }
 
-        public Address(string zipCode, string city)
+        internal Address(string zipCode, string city)
         {
             ZipCode = zipCode;
             City = city;

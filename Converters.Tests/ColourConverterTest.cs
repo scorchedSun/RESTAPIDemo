@@ -1,8 +1,8 @@
-﻿using Exceptions;
+﻿using Utils.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
+using Utils;
+using Contracts;
 
 namespace Converters.Tests
 {
@@ -10,20 +10,16 @@ namespace Converters.Tests
     public class ColourConverterTest
     {
         [TestMethod]
-        [DataRow("1")]
-        [DataRow("2")]
-        [DataRow("3")]
-        [DataRow("4")]
-        [DataRow("5")]
-        [DataRow("6")]
-        [DataRow("7")]
-        public void ColourConverter_ConvertSupportedCode_Succeeds(string code)
+        public void ColourConverter_ConvertSupportedCode_Succeeds()
         {
-            ColourConverter converter = new ColourConverter();
+            IConverter<string, Color> converter = new ColourConverter();
 
-            Color colour = converter.Convert(code);
+            foreach (string code in ColourMap.GetAllCodes())
+            {
+                Color colour = converter.Convert(code);
 
-            Assert.AreEqual(converter.ColourMap[code], colour);
+                Assert.AreEqual(ColourMap.GetColourFor(code), colour);
+            }
         }
 
         [TestMethod]
@@ -32,7 +28,7 @@ namespace Converters.Tests
         [ExpectedException(typeof(InvalidColourCodeException))]
         public void ColourConverter_ConvertUnsopportedCode_ThrowsInvalidColourCodeException(string code)
         {
-            ColourConverter converter = new ColourConverter();
+            IConverter<string, Color> converter = new ColourConverter();
 
             converter.Convert(code);
         }
@@ -41,8 +37,8 @@ namespace Converters.Tests
         public void ColourConverter_ConvertSupportedColour_Succeeds()
         {
             Color colour = Color.Blue;
-            ColourConverter converter = new ColourConverter();
-            string expectedCode = converter.ColourMap.Single(kvp => kvp.Value.Equals(colour)).Key;
+            IConverter<string, Color> converter = new ColourConverter();
+            string expectedCode = ColourMap.GetCodeFor(colour);
 
             string converted = converter.Convert(colour);
 
@@ -53,7 +49,7 @@ namespace Converters.Tests
         [ExpectedException(typeof(UnsupportedColourException))]
         public void ColourConverter_ConvertUnsupportedColour_ThrowsUnsupportedColourException()
         {
-            ColourConverter converter = new ColourConverter();
+            IConverter<string, Color> converter = new ColourConverter();
 
             converter.Convert(Color.Beige);
         }

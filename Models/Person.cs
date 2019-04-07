@@ -15,13 +15,13 @@ namespace Models
 
         public int ID { get; }
 
-        public Person(int id, string name, string lastName, IAddress address, Color favouriteColor)
+        internal Person(int id, string name, string lastName, IAddress address, Color favouriteColour)
         {
             ID = id;
             Name = name;
             LastName = lastName;
             Address = address;
-            FavouriteColour = favouriteColor;
+            FavouriteColour = favouriteColour;
         }
     }
 }
