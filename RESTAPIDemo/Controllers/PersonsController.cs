@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Contracts;
 using Microsoft.AspNetCore.Mvc;
+using RESTAPIDemo.Facades;
 
 namespace RESTAPIDemo.Controllers
 {
@@ -14,7 +16,7 @@ namespace RESTAPIDemo.Controllers
 
         // GET api/values
         [HttpGet]
-        public OkObjectResult Get() => Ok(Json(repository.GetAll()));
+        public OkObjectResult Get() => Ok(Json(repository.GetAll().Select(person => new PersonFacade(person))));
 
         // GET api/values/5
         [HttpGet("{id}")]
