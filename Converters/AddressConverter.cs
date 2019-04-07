@@ -7,9 +7,9 @@ namespace Converters
     {
         private const int NumberOfParts = 2;
 
-        private readonly IAdressWithZipCode addressBuilder;
+        private readonly IAddressWithZipCodeBuilder addressBuilder;
 
-        public AddressConverter(IAdressWithZipCode addressBuilder) => this.addressBuilder = addressBuilder;
+        public AddressConverter(IAddressWithZipCodeBuilder addressBuilder) => this.addressBuilder = addressBuilder;
 
         public override IAddress Convert(string toConvert)
         {

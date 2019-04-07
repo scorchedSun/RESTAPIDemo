@@ -2,33 +2,33 @@
 
 namespace Contracts
 {
-    public interface IPersonWithID
+    public interface IPersonWithIDBuilder
     {
-        IPersonWithName WithID(int id);
+        IPersonWithNameBuilder WithID(int id);
     }
 
-    public interface IPersonWithName
+    public interface IPersonWithNameBuilder
     {
-        IPersonWithLastName WithName(string name);
+        IPersonWithLastNameBuilder WithName(string name);
     }
 
-    public interface IPersonWithLastName
+    public interface IPersonWithLastNameBuilder
     {
-        IPersonWithAddress WithLastName(string lastName);
+        IPersonWithAddressBuilder WithLastName(string lastName);
     }
 
-    public interface IPersonWithAddress
+    public interface IPersonWithAddressBuilder
     {
-        IPersonWithFavouriteColour WithAddress(IAddress address);
+        IPersonWithFavouriteColourBuilder WithAddress(IAddress address);
     }
 
-    public interface IPersonWithFavouriteColour
+    public interface IPersonWithFavouriteColourBuilder
     {
         IPersonBuilder WithFavouriteColour(Color colour);
     }
 
     public interface IPersonBuilder
-        : IPersonWithID, IPersonWithName, IPersonWithLastName, IPersonWithAddress, IPersonWithFavouriteColour
+        : IPersonWithIDBuilder, IPersonWithNameBuilder, IPersonWithLastNameBuilder, IPersonWithAddressBuilder, IPersonWithFavouriteColourBuilder
     {
         IPerson Build();
     }

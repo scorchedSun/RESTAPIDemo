@@ -7,17 +7,23 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RESTAPIDemo", "RESTAPIDemo\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "Contracts\Contracts.csproj", "{2A5D2702-42D1-4AF4-9B66-A05052342633}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSVDataSource", "CSVDataSource\CSVDataSource.csproj", "{48FBFCAC-8839-4495-99AA-69E34853720F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSVDataSource", "CSVDataSource\CSVDataSource.csproj", "{48FBFCAC-8839-4495-99AA-69E34853720F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Converters", "Converters\Converters.csproj", "{2825096F-C2BF-440A-A082-76ED9548A1FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Converters", "Converters\Converters.csproj", "{2825096F-C2BF-440A-A082-76ED9548A1FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{1ACF1938-B1CB-46BE-916B-230ECE8DC3E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csproj", "{1ACF1938-B1CB-46BE-916B-230ECE8DC3E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Converters.Tests", "Converters.Tests\Converters.Tests.csproj", "{D162F39A-70A4-49EB-A39A-0FF5E3EB32C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Converters.Tests", "Converters.Tests\Converters.Tests.csproj", "{D162F39A-70A4-49EB-A39A-0FF5E3EB32C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSVDataSource.Tests", "CSVDataSource.Tests\CSVDataSource.Tests.csproj", "{14F903EF-B4F3-4C1B-B27B-841424689316}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSVDataSource.Tests", "CSVDataSource.Tests\CSVDataSource.Tests.csproj", "{14F903EF-B4F3-4C1B-B27B-841424689316}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils", "Utils\Utils.csproj", "{5E6E291B-4FF9-4931-B8C3-4EF27B9F753B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utils", "Utils\Utils.csproj", "{5E6E291B-4FF9-4931-B8C3-4EF27B9F753B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repositories", "Repositories\Repositories.csproj", "{C4089EDC-53A2-47C3-9906-1748D8B00BFB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repositories.Tests", "Repositories.Tests\Repositories.Tests.csproj", "{96D51F11-940B-47CD-9E07-E9447400FFD7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestUtils", "TestUtils\TestUtils.csproj", "{A482F527-F4D1-4815-B747-81CD9CDF53C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +63,18 @@ Global
 		{5E6E291B-4FF9-4931-B8C3-4EF27B9F753B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E6E291B-4FF9-4931-B8C3-4EF27B9F753B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E6E291B-4FF9-4931-B8C3-4EF27B9F753B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4089EDC-53A2-47C3-9906-1748D8B00BFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4089EDC-53A2-47C3-9906-1748D8B00BFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4089EDC-53A2-47C3-9906-1748D8B00BFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4089EDC-53A2-47C3-9906-1748D8B00BFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96D51F11-940B-47CD-9E07-E9447400FFD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96D51F11-940B-47CD-9E07-E9447400FFD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96D51F11-940B-47CD-9E07-E9447400FFD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96D51F11-940B-47CD-9E07-E9447400FFD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A482F527-F4D1-4815-B747-81CD9CDF53C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A482F527-F4D1-4815-B747-81CD9CDF53C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A482F527-F4D1-4815-B747-81CD9CDF53C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A482F527-F4D1-4815-B747-81CD9CDF53C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

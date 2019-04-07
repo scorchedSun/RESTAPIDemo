@@ -1,8 +1,7 @@
-﻿using Utils.Exceptions;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using Utils.Exceptions;
 
 namespace Utils
 {

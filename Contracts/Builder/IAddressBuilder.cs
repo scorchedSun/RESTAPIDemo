@@ -1,17 +1,17 @@
 ﻿namespace Contracts
 {
-    public interface IAdressWithZipCode
+    public interface IAddressWithZipCodeBuilder
     {
-        IAddressWithCity WithZipCode(string zipCode);
+        IAddressWithCityBuilder WithZipCode(string zipCode);
     }
 
-    public interface IAddressWithCity
+    public interface IAddressWithCityBuilder
     {
         IAddressBuilder WithCity(string city);
     }
 
     public interface IAddressBuilder
-        : IAdressWithZipCode, IAddressWithCity
+        : IAddressWithZipCodeBuilder, IAddressWithCityBuilder
     {
         IAddress Build();
     }
