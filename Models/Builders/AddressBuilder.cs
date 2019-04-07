@@ -12,7 +12,7 @@ namespace Models.Builders
 
         private AddressBuilder() {}
 
-        public static IWithZipCodeAddressBuilder Create() => new AddressBuilder();
+        public static IAdressWithZipCode Create() => new AddressBuilder();
 
         public IAddress Build() => new Address(zipCode, city);
 
@@ -22,7 +22,7 @@ namespace Models.Builders
             return this;
         }
 
-        public IWithCityAddressBuilder WithZipCode(string zipCode)
+        public IAddressWithCity WithZipCode(string zipCode)
         {
             this.zipCode = zipCode;
             return this;

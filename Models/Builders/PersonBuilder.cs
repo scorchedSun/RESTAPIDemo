@@ -16,14 +16,14 @@ namespace Models.Builders
 
         private PersonBuilder() {}
 
-        public static IWithIDPersonBuilder Create() => new PersonBuilder();
+        public static IPersonWithID Create() => new PersonBuilder();
 
         public IPerson Build()
         {
             return new Person(id, name, lastName, address, colour);
         }
 
-        public IWithFavouriteColourPersonBuilder WithAddress(IAddress address)
+        public IPersonWithFavouriteColour WithAddress(IAddress address)
         {
             this.address = address;
             return this;
@@ -35,19 +35,19 @@ namespace Models.Builders
             return this;
         }
 
-        public IWithNamePersonBuilder WithID(int id)
+        public IPersonWithName WithID(int id)
         {
             this.id = id;
             return this;
         }
 
-        public IWithAddressPersonBuilder WithLastName(string lastName)
+        public IPersonWithAddress WithLastName(string lastName)
         {
             this.lastName = lastName;
             return this;
         }
 
-        public IWithLastNamePersonBuilder WithName(string name)
+        public IPersonWithLastName WithName(string name)
         {
             this.name = name;
             return this;
