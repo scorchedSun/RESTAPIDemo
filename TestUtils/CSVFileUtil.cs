@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Contracts;
+using Models;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -25,7 +27,7 @@ namespace TestUtils
         public static string CreateTestFile()
         {
             string filePath = Path.GetTempFileName() + ".csv";
-            File.WriteAllLines(filePath, testData.Select(entry => entry + ";"));
+            File.WriteAllLines(filePath, testData);
             return filePath;
         }
 
@@ -34,5 +36,9 @@ namespace TestUtils
         public static bool EntryExists(string entry) => testData.Any(value => value.Equals(entry));
 
         public static int IndexOf(string entry) => testData.IndexOf(entry);
+
+        public static ISeparatorSequence SeparatorSequence => new SeparatorSequence(", ");
+
+        public static IFieldSequence FieldSequence => new FieldSequence(new[]{ "LastName", "Name", "Address", "FavouriteColour" });
     }
 }

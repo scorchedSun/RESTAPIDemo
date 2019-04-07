@@ -14,7 +14,9 @@ namespace CSVDataSource
         private readonly IConverter<(int, string), IPerson> converter;
         private readonly IList<(int, string)> toConvert = new List<(int, string)>();
 
-        public CSVPersonDataSource(IPhysicalDataSource physicalDataSource, IConverter<(int, string), IPerson> converter)
+        public CSVPersonDataSource(
+            IPhysicalDataSource physicalDataSource,
+            IConverter<(int, string), IPerson> converter)
         {
             this.physicalDataSource = physicalDataSource;
             if (!File.Exists(FilePath))
@@ -32,13 +34,13 @@ namespace CSVDataSource
         {
             for (int i = 0; i < lines.Length; i++)
             {
-                string line = lines[i].Trim(';');
+                string line = lines[i];
                 if (!line.Equals(string.Empty))
                     toConvert.Add((i + 1, line));
             }
             return toConvert;
         }
 
-        public void WriteAll(IList<IPerson> entries) => File.WriteAllLines(FilePath, converter.Convert(entries).Select(entry => entry.Item2 + ";"));
+        public void WriteAll(IList<IPerson> entries) => File.WriteAllLines(FilePath, converter.Convert(entries).Select(entry => entry.Item2));
     }
 }

@@ -1,6 +1,7 @@
 using Contracts;
 using Converters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Models;
 using Models.Builders;
 using System;
 using System.Collections.Generic;
@@ -19,13 +20,15 @@ namespace CSVDataSource.Tests
             personConverter = new PersonConverter(
                 new ColourConverter(),
                 new AddressConverter(AddressBuilder.Create()),
-                PersonBuilder.Create());
+                PersonBuilder.Create(),
+                CSVFileUtil.SeparatorSequence,
+                CSVFileUtil.FieldSequence);
         }
 
         [TestMethod]
         public void CSVPersonDataSource_ReadingValidCSV_Succeeds()
         {
-            IDataSource<IPerson> personDataSource = new CSVPersonDataSource(CSVFileUtil.CreateTestFile(), personConverter);
+            IDataSource<IPerson> personDataSource = new CSVPersonDataSource(new PhysicalDataSource(CSVFileUtil.CreateTestFile()), personConverter);
 
             IList<IPerson> persons = personDataSource.LoadAll();
 
@@ -40,7 +43,7 @@ namespace CSVDataSource.Tests
             string filePath = Path.GetRandomFileName();
             Assert.IsFalse(File.Exists(filePath));
 
-            new CSVPersonDataSource(filePath, personConverter).LoadAll();
+            new CSVPersonDataSource(new PhysicalDataSource(filePath), personConverter).LoadAll();
         }
 
         private void AssertPersonsWereReadCorrectly(IList<IPerson> persons)

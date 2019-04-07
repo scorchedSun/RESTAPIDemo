@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Threading;
@@ -35,6 +36,10 @@ namespace RESTAPIDemo
         private string personDataSourcePath;
         // Type to be used to represent the data source for persons as configured in appsettings.json
         private Type personDataSource;
+        // Separator sequence for csv files as configured in appsettings.json
+        private string personCSVSeparator;
+        // Sequence of fields in the csv file 
+        private string[] personFieldSequence;
 
         // The IoC's kernel
         private IKernel Kernel { get; set; }
@@ -102,6 +107,8 @@ namespace RESTAPIDemo
 
             personDataSourcePath = ResolveDataSourcePath(personDataSourceID);
             personDataSource = DetermineTypeForDataSource(personDataSourceID, new DataSourceTypeConverter());
+            personCSVSeparator = DetermineSeparatorForDataSource(personDataSourceID);
+            personFieldSequence = DetermineFieldSequenceForDataSource(personDataSourceID);
 
             kernel = CreateBindings(kernel);
 
@@ -133,8 +140,7 @@ namespace RESTAPIDemo
         /// <returns>The type for data source</returns>
         private Type DetermineTypeForDataSource(string dataSourceName, IConverter<string, Type> converter)
         {
-            string dataSourceType = Configuration[string.Format(dataSourceSettingsBase, dataSourceName, "Type")];
-            return converter.Convert(dataSourceType);
+            return converter.Convert(GetConfiguredType(dataSourceName));
         }
 
         /// <summary>
@@ -151,6 +157,32 @@ namespace RESTAPIDemo
             return path;
         }
 
+        private string DetermineSeparatorForDataSource(string dataSourceName)
+        {
+            if (GetConfiguredType(dataSourceName) != "csv") return null;
+            return Configuration[string.Format(dataSourceSettingsBase, dataSourceName, "Separator")];
+        }
+
+        private string[] DetermineFieldSequenceForDataSource(string dataSourceName)
+        {
+            if (GetConfiguredType(dataSourceName) != "csv") return null;
+            if (!int.TryParse(Configuration[string.Format(dataSourceSettingsBase, dataSourceName, "NumberOfFields")], out int numberOfFields))
+                return null;
+
+            string[] fieldSequence = new string[numberOfFields];
+            for (int i = 0; i < numberOfFields; i++)
+                fieldSequence[i] = Configuration[string.Format(dataSourceSettingsBase, dataSourceName, $"FieldSequence:{i}")];
+
+            return fieldSequence;
+        }
+
+        /// <summary>
+        /// Gets the string representation of the physical data source's type.
+        /// </summary>
+        /// <param name="dataSourceName">The data source's name</param>
+        /// <returns>The data source's type as specified in appsettings.json</returns>
+        private string GetConfiguredType(string dataSourceName) => Configuration[string.Format(dataSourceSettingsBase, dataSourceName, "Type")];
+
         /// <summary>
         /// Creates the IoC bindings so that the interfaces can be resolved at runtime.
         /// </summary>
@@ -166,6 +198,8 @@ namespace RESTAPIDemo
             kernel.Bind<IPhysicalDataSource>().ToMethod(_ => new PhysicalDataSource(personDataSourcePath));
             kernel.Bind<IDataSource<IPerson>>().To(personDataSource);
             kernel.Bind<IPersonRepository>().To(typeof(PersonRepository));
+            kernel.Bind<ISeparatorSequence>().ToMethod(_ => new SeparatorSequence(personCSVSeparator)).Named("csv");
+            kernel.Bind<IFieldSequence>().ToMethod(_ => new FieldSequence(personFieldSequence)).Named("csv");
             return kernel;
         }
     }

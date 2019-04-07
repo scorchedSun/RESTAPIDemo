@@ -1,8 +1,10 @@
 ﻿using Contracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Models;
 using Models.Builders;
 using System;
 using System.Drawing;
+using TestUtils;
 using Utils;
 
 namespace Converters.Tests
@@ -21,7 +23,12 @@ namespace Converters.Tests
 
             addressConverter = new AddressConverter(AddressBuilder.Create());
             colourConverter = new ColourConverter();
-            personConverter = new PersonConverter(colourConverter, addressConverter, personBuilder);
+            personConverter = new PersonConverter(
+                colourConverter,
+                addressConverter,
+                personBuilder,
+                CSVFileUtil.SeparatorSequence,
+                CSVFileUtil.FieldSequence);
         }
 
         [TestMethod]
@@ -29,7 +36,7 @@ namespace Converters.Tests
         [DataRow(2, "Just", "Another-Test", "11111", "Some City", "7")]
         public void PersonConverter_ConvertValidString_Succeeds(int id, string name, string lastName, string zipCode, string city, string colourCode)
         {
-            IPerson person = personConverter.Convert((id, $"{name}, {lastName}, {zipCode} {city}, {colourCode}"));
+            IPerson person = personConverter.Convert((id, $"{lastName}, {name}, {zipCode} {city}, {colourCode}"));
 
             Assert.AreEqual(id, person.ID);
             Assert.AreEqual(name, person.Name);
@@ -66,7 +73,7 @@ namespace Converters.Tests
             (int id, string data) converted = personConverter.Convert(person);
 
             Assert.AreEqual(id, converted.id);
-            Assert.AreEqual($"{name}, {lastName}, {zipCode} {city}, {colourCode}", converted.data);
+            Assert.AreEqual($"{lastName}, {name}, {zipCode} {city}, {colourCode}", converted.data);
         }
     }
 }
