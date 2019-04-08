@@ -1,9 +1,9 @@
 ﻿using Contracts;
 using System;
 
-namespace Converters
+namespace CSVConverters
 {
-    public class AddressConverter : Converter<string, IAddress>
+    public class AddressConverter : Converters.Converter<string, IAddress>
     {
         private const int NumberOfParts = 2;
 

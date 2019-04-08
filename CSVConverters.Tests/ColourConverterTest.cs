@@ -4,7 +4,7 @@ using System.Drawing;
 using Utils;
 using Contracts;
 
-namespace Converters.Tests
+namespace CSVConverters.Tests
 {
     [TestClass]
     public class ColourConverterTest

@@ -1,13 +1,12 @@
 ﻿using Contracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Models;
 using Models.Builders;
 using System;
 using System.Drawing;
 using TestUtils;
 using Utils;
 
-namespace Converters.Tests
+namespace CSVConverters.Tests
 {
     [TestClass]
     public class PersonConverterTest

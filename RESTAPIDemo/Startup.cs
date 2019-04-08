@@ -5,6 +5,7 @@ using System.IO;
 using System.Threading;
 using Contracts;
 using Converters;
+using CSVConverters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -67,7 +68,6 @@ namespace RESTAPIDemo
             services.AddCustomViewComponentActivation(Resolve);
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         /// <summary>
         /// Called by the runtime.
         /// Use to configure the HTTP request pipeline.

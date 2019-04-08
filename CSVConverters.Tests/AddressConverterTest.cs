@@ -1,10 +1,10 @@
-using Contracts;
+﻿using Contracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Models.Builders;
 using System;
 using System.Text.RegularExpressions;
 
-namespace Converters.Tests
+namespace CSVConverters.Tests
 {
     [TestClass]
     public class AddressConverterTest

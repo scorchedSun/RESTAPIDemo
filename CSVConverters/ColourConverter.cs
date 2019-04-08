@@ -1,10 +1,10 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using Utils;
+using System;
 
-namespace Converters
+namespace CSVConverters
 {
-    public class ColourConverter : Converter<string, Color>
+    public class ColourConverter : Converters.Converter<string, Color>
     {
         public override Color Convert(string toConvert)
         {
