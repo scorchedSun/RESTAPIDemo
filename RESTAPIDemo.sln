@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "Contracts\Cont
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSVDataSource", "CSVDataSource\CSVDataSource.csproj", "{48FBFCAC-8839-4495-99AA-69E34853720F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Converters", "Converters\Converters.csproj", "{2825096F-C2BF-440A-A082-76ED9548A1FC}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csproj", "{1ACF1938-B1CB-46BE-916B-230ECE8DC3E8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSVDataSource.Tests", "CSVDataSource.Tests\CSVDataSource.Tests.csproj", "{14F903EF-B4F3-4C1B-B27B-841424689316}"
@@ -22,10 +20,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestUtils", "TestUtils\TestUtils.csproj", "{A482F527-F4D1-4815-B747-81CD9CDF53C3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RESTAPIDemo.Tests", "RESTAPIDemo.Tests\RESTAPIDemo.Tests.csproj", "{D3B1E2EE-0004-4D96-814E-9431F3F978DF}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSVConverters", "CSVConverters\CSVConverters.csproj", "{6DEFF0F4-20EF-4311-B768-E372F8286DD9}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSVConverters.Tests", "CSVConverters.Tests\CSVConverters.Tests.csproj", "{B10AB711-7D0A-46AE-9819-98D659888177}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,10 +39,6 @@ Global
 		{48FBFCAC-8839-4495-99AA-69E34853720F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48FBFCAC-8839-4495-99AA-69E34853720F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48FBFCAC-8839-4495-99AA-69E34853720F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2825096F-C2BF-440A-A082-76ED9548A1FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2825096F-C2BF-440A-A082-76ED9548A1FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2825096F-C2BF-440A-A082-76ED9548A1FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2825096F-C2BF-440A-A082-76ED9548A1FC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1ACF1938-B1CB-46BE-916B-230ECE8DC3E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1ACF1938-B1CB-46BE-916B-230ECE8DC3E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1ACF1938-B1CB-46BE-916B-230ECE8DC3E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -73,14 +63,6 @@ Global
 		{D3B1E2EE-0004-4D96-814E-9431F3F978DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3B1E2EE-0004-4D96-814E-9431F3F978DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3B1E2EE-0004-4D96-814E-9431F3F978DF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6DEFF0F4-20EF-4311-B768-E372F8286DD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6DEFF0F4-20EF-4311-B768-E372F8286DD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6DEFF0F4-20EF-4311-B768-E372F8286DD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6DEFF0F4-20EF-4311-B768-E372F8286DD9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B10AB711-7D0A-46AE-9819-98D659888177}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B10AB711-7D0A-46AE-9819-98D659888177}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B10AB711-7D0A-46AE-9819-98D659888177}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B10AB711-7D0A-46AE-9819-98D659888177}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

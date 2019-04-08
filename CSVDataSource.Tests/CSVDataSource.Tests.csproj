@@ -13,8 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Converters\Converters.csproj" />
-    <ProjectReference Include="..\CSVConverters\CSVConverters.csproj" />
     <ProjectReference Include="..\CSVDataSource\CSVDataSource.csproj" />
     <ProjectReference Include="..\Models\Models.csproj" />
     <ProjectReference Include="..\TestUtils\TestUtils.csproj" />

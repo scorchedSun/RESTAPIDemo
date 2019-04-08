@@ -1,6 +1,4 @@
-﻿using Contracts;
-using Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -8,6 +6,8 @@ namespace TestUtils
 {
     public static class CSVFileUtil
     {
+        private const string SeparatorSequence = ", ";
+
         private static readonly IList<string> testData = new List<string>()
         {
             "Müller, Hans, 67742 Lauterecken, 1",
@@ -21,6 +21,8 @@ namespace TestUtils
             "Gerber, Gerda, 76535 Woanders, 3",
             "Klaussen, Klaus, 43246 Hierach, 2"
         };
+
+        private static readonly IList<string> fieldSequence = new List<string> { "LastName", "Name", "Address", "FavouriteColour" };
 
         public static int NumberOfEntries => testData.Count;
 
@@ -37,8 +39,13 @@ namespace TestUtils
 
         public static int IndexOf(string entry) => testData.IndexOf(entry);
 
-        public static ISeparatorSequence SeparatorSequence => new SeparatorSequence(", ");
-
-        public static IFieldSequence FieldSequence => new FieldSequence(new[]{ "LastName", "Name", "Address", "FavouriteColour" });
+        public static MockCSVDataSourceConfiguration CreateMockConfiguration()
+        {
+            return new MockCSVDataSourceConfiguration()
+            {
+                Separator = SeparatorSequence,
+                FieldSequence = fieldSequence
+            };
+        }
     }
 }

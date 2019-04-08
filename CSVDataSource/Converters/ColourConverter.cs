@@ -2,7 +2,7 @@
 using Utils;
 using System;
 
-namespace CSVConverters
+namespace CSVDataSource.Converters
 {
     public class ColourConverter : Utils.Converter<string, Color>
     {

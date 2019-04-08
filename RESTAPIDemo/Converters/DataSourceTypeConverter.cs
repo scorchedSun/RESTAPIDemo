@@ -1,12 +1,13 @@
 ﻿using CSVDataSource;
 using System;
+using Utils.Exceptions;
 
 namespace RESTAPIDemo
 {
     /// <summary>
     /// Converts the data source type as configured in appsettings.json to the actual representation.
     /// </summary>
-    public class DataSourceTypeConverter : Converters.Converter<string, Type>
+    public class DataSourceTypeConverter : Utils.Converter<string, Type>
     {
         /// <summary>
         /// Converts the value from the appsettings.json file to the actual representation.
@@ -21,7 +22,7 @@ namespace RESTAPIDemo
                 case "csv":
                     return typeof(CSVPersonDataSource);
                 default:
-                    throw new InvalidOperationException($"Invalid configuration '{toConvert}'. Check your application settings.");
+                    throw new InvalidDataSourceTypeException(toConvert);
             }
         }
 

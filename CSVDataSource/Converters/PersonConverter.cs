@@ -1,13 +1,13 @@
 ﻿using Contracts;
-using CSVDataSource;
+using CSVDataSource.Contracts;
 using Ninject;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace CSVConverters
+namespace CSVDataSource.Converters
 {
-    public class PersonConverter : Converters.Converter<(int id, string data), IPerson>
+    public class PersonConverter : Utils.Converter<(int id, string data), IPerson>
     {
         private readonly IConverter<string, Color> colourConverter;
         private readonly IConverter<string, IAddress> addressConverter;

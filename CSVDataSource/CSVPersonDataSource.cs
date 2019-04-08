@@ -1,4 +1,6 @@
 ﻿using Contracts;
+using CSVDataSource.Contracts;
+using Ninject;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,17 +10,17 @@ namespace CSVDataSource
 {
     public class CSVPersonDataSource : IDataSource<IPerson>
     {
-        private readonly IPhysicalDataSource physicalDataSource;
-        private string FilePath => physicalDataSource.FilePath;
+        private readonly ICSVDataSourceConfiguration configuration;
+        private string FilePath => configuration.Path;
 
         private readonly IConverter<(int, string), IPerson> converter;
         private readonly IList<(int, string)> toConvert = new List<(int, string)>();
 
         public CSVPersonDataSource(
-            IPhysicalDataSource physicalDataSource,
+            [Named(nameof(IPerson))] ICSVDataSourceConfiguration configuration,
             IConverter<(int, string), IPerson> converter)
         {
-            this.physicalDataSource = physicalDataSource;
+            this.configuration = configuration;
             if (!File.Exists(FilePath))
                 throw new ArgumentException($"Can't create a data source for the file '{FilePath}' since it doesn't exist.");
             this.converter = converter;

@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Contracts\Contracts.csproj" />
-    <ProjectReference Include="..\Converters\Converters.csproj" />
+    <ProjectReference Include="..\CSVDataSource\CSVDataSource.csproj" />
     <ProjectReference Include="..\Utils\Utils.csproj" />
   </ItemGroup>
 
