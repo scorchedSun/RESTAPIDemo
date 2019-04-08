@@ -35,7 +35,7 @@ namespace RESTAPIDemo.Configurations
         private string[] DetermineFieldSequenceForDataSource()
         {
             if (!int.TryParse(configuration[string.Format(dataSourceSettingsBase, Name, "NumberOfFields")], out int numberOfFields))
-                return null;
+                throw new FormatException("The entry NumberOfFields in the appsettings couldn't be parsed as an integer.");
 
             string[] fieldSequence = new string[numberOfFields];
             for (int i = 0; i < numberOfFields; i++)
