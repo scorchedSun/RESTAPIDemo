@@ -1,49 +1,38 @@
 ﻿using Contracts;
-using Microsoft.Extensions.Configuration;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace RESTAPIDemo.Configurations
+namespace DataSource
 {
     public class DataSourceConfiguration : IDataSourceConfiguration
     {
         // Formatting string to create accessors for data source settings in the appsettings.json
-        protected const string dataSourceSettingsBase = "DataSource:{0}:{1}";
+        protected const string dataSourceSettingsBase = "DataSources:{0}:{1}";
 
-        protected readonly IConfiguration configuration;
-        protected readonly IConverter<string, Type> typeConverter;
+        protected readonly IDictionary<string, string> configuration;
 
         private string path;
-        private Type type;
 
         public string Path => path ?? (path = ResolveDataSourcePath());
-
-        public Type Type => type ?? (type = typeConverter.Convert(ConfiguredType));
 
         public string Name { get; }
 
         protected DataSourceConfiguration(
             string name,
-            IConfiguration configuration,
-            IConverter<string, Type> typeConverter)
+            IDictionary<string, string> configuration)
         {
             this.configuration = configuration;
-            this.typeConverter = typeConverter;
             Name = name;
         }
 
-        public static IDataSourceConfiguration LoadFrom(IConfiguration configuration,
-                                                        string name,
-                                                        IConverter<string, Type> typeConverter)
-            => new DataSourceConfiguration(name, configuration, typeConverter);
+        public static IDataSourceConfiguration LoadFrom(IDictionary<string, string> configuration,
+                                                        string name)
+            => new DataSourceConfiguration(name, configuration);
 
         /// <summary>
         /// Gets the string representation of the physical data source's type.
         /// </summary>
         /// <returns>The data source's type as specified in appsettings.json</returns>
-        public string ConfiguredType => configuration[string.Format(dataSourceSettingsBase, Name, "Type")];
+        public static string GetConfiguredType(IDictionary<string, string> configuration, string name) => configuration[string.Format(dataSourceSettingsBase, name, "Type")];
 
         /// <summary>
         /// Resolves the path to the physical representation of a data source using the application settings.
@@ -53,7 +42,7 @@ namespace RESTAPIDemo.Configurations
         private string ResolveDataSourcePath()
         {
             string path = configuration[string.Format(dataSourceSettingsBase, Name, "Path")];
-            if (!System.IO.Path.IsPathFullyQualified(path))
+            if (!System.IO.Path.IsPathRooted(path))
                 path = System.IO.Path.GetFullPath(path);
             return path;
         }

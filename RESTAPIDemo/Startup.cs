@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Drawing;
+using System.Collections.Generic;
 using System.Threading;
 using Contracts;
-using CSVDataSource.Contracts;
-using CSVDataSource.Converters;
+using DataSource;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -17,7 +16,6 @@ using Ninject;
 using Ninject.Activation;
 using Ninject.Infrastructure.Disposal;
 using Repositories;
-using RESTAPIDemo.Configurations;
 
 namespace RESTAPIDemo
 {
@@ -25,10 +23,9 @@ namespace RESTAPIDemo
     {
         private sealed class Scope : DisposableObject { }
 
-        // String to identify entries in appsettings.json regarding data sources for persons
-        private const string personDataSourceID = "Person";
-
         private readonly AsyncLocal<Scope> scopeProvider = new AsyncLocal<Scope>();
+
+        private readonly ILogger logger = new ConsoleLogger();
 
         // The IoC's kernel
         private IKernel Kernel { get; set; }
@@ -120,17 +117,12 @@ namespace RESTAPIDemo
         /// <returns>The <paramref name="kernel"/></returns>
         private IKernel CreateBindings(IKernel kernel)
         {
-            ICSVDataSourceConfiguration configuration = CSVDataSourceConfiguration.LoadFrom(Configuration, personDataSourceID, new DataSourceTypeConverter());
-
-            kernel.Bind<IConverter<string, IAddress>>().To(typeof(AddressConverter));
-            kernel.Bind<IConverter<string, Color>>().To(typeof(ColourConverter));
-            kernel.Bind<IConverter<(int, string), IPerson>>().To(typeof(PersonConverter));
             kernel.Bind<IPersonBuilder>().ToMethod(_ => PersonBuilder.Create());
             kernel.Bind<IAddressBuilder>().ToMethod(_ => AddressBuilder.Create());
-            kernel.Bind<IDataSource<IPerson>>().To(configuration.Type);
             kernel.Bind<IPersonRepository>().To(typeof(PersonRepository));
-            kernel.Bind<ICSVDataSourceConfiguration>().ToMethod(_ => configuration).Named(nameof(IPerson));
-            return kernel;
+
+            DataSourceTypeBinder binder = new DataSourceTypeBinder(new Dictionary<string, string>(Configuration.AsEnumerable()));
+            return binder.Bind<IPerson>(kernel);
         }
     }
 }

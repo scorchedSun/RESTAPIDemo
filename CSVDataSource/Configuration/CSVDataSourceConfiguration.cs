@@ -1,9 +1,8 @@
-﻿using Contracts;
-using CSVDataSource.Contracts;
-using Microsoft.Extensions.Configuration;
+﻿using CSVDataSource.Contracts;
+using DataSource;
+using Exceptions;
 using System;
 using System.Collections.Generic;
-using Utils.Exceptions;
 
 namespace RESTAPIDemo.Configurations
 {
@@ -20,17 +19,16 @@ namespace RESTAPIDemo.Configurations
 
         private CSVDataSourceConfiguration(
             string name,
-            IConfiguration configuration,
-            IConverter<string, Type> typeConverter)
-            : base(name, configuration, typeConverter)
+            IDictionary<string, string> configuration)
+            : base(name, configuration)
         {
-            if (ConfiguredType != expectedType) throw new InvalidDataSourceTypeException(name, ConfiguredType, expectedType);
+            string configuredType = GetConfiguredType(configuration, Name);
+            if (configuredType != expectedType) throw new InvalidDataSourceTypeException(name, configuredType, expectedType);
         }
 
-        new public static ICSVDataSourceConfiguration LoadFrom(IConfiguration configuration,
-                                                               string name,
-                                                               IConverter<string, Type> typeConverter)
-            => new CSVDataSourceConfiguration(name, configuration, typeConverter);
+        new public static ICSVDataSourceConfiguration LoadFrom(IDictionary<string, string> configuration,
+                                                               string name)
+            => new CSVDataSourceConfiguration(name, configuration);
 
         private string[] DetermineFieldSequenceForDataSource()
         {

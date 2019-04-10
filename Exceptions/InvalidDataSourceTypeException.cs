@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Utils.Exceptions
+namespace Exceptions
 {
     public class InvalidDataSourceTypeException : FormatException
     {
@@ -15,6 +15,10 @@ namespace Utils.Exceptions
         public InvalidDataSourceTypeException(string message, Exception innerException) : base(message, innerException)
         {
         }
+
+        public InvalidDataSourceTypeException(string configurationName, string configuredType)
+            : base($"The data source configuration '{configurationName}' has an invalid type. The type '{configuredType}' is not supported.")
+        {}
 
         public InvalidDataSourceTypeException(string configurationName, string configuredType, string expectedType)
             : base($"The data source configuration '{configurationName}' has an invalid type. Configured: {configuredType} Expected: {expectedType}")
