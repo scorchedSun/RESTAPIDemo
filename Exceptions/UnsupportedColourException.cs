@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
 
-namespace Exceptions
+namespace Utils.Exceptions
 {
     public class UnsupportedColourException : Exception
     {

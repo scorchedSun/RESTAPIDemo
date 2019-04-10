@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Exceptions
+namespace Utils.Exceptions
 {
     public class InvalidColourCodeException : Exception
     {
@@ -13,7 +13,8 @@ namespace Exceptions
         {
         }
 
-        public InvalidColourCodeException(string message, Exception innerException) : base(message, innerException)
+        public InvalidColourCodeException(string code, Exception innerException) 
+            : base($"The code '{code}' couldn't be matched to a colour", innerException)
         {
         }
     }
