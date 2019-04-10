@@ -1,9 +1,6 @@
 using Contracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Models.Builders;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
 using TestUtils;
 using Utils.Exceptions;
 
