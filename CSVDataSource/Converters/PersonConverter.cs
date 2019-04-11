@@ -13,8 +13,10 @@ namespace CSVDataSource.Converters
         private readonly IConverter<string, IAddress> addressConverter;
         private readonly IPersonBuilder personBuilder;
         private readonly ICSVDataSourceConfiguration configuration;
-        private string separator => configuration.Separator;
-        private IList<string> fieldSequence => configuration.FieldSequence;
+        private string Separator => configuration.Separator;
+        private IList<string> FieldSequence => configuration.FieldSequence;
+
+        private readonly IDictionary<string, Func<dynamic, dynamic>> fieldConverters;
 
         public PersonConverter(IConverter<string, Color> colourConverter,
                                IConverter<string, IAddress> addressConverter,
@@ -26,21 +28,27 @@ namespace CSVDataSource.Converters
             this.addressConverter = addressConverter;
             this.personBuilder = personBuilder;
             this.configuration = configuration;
+
+            fieldConverters = new Dictionary<string, Func<dynamic, dynamic>>
+            {
+                [nameof(IPerson.Address)] = new Func<dynamic, dynamic>((dynamic value) => this.addressConverter.Convert(value)),
+                [nameof(IPerson.FavouriteColour)] = new Func<dynamic, dynamic>((dynamic value) => this.colourConverter.Convert(value))
+            };
         }
 
         public override IPerson Convert((int id, string data) toConvert)
         {
             if (toConvert.data is null) throw new ArgumentNullException(nameof(toConvert.data));
 
-            string[] parts = toConvert.data.Split(new[] { separator }, StringSplitOptions.None);
-            if (parts.Length != fieldSequence.Count)
+            string[] parts = toConvert.data.Split(new[] { Separator }, StringSplitOptions.None);
+            if (parts.Length != FieldSequence.Count)
                 throw new FormatException(nameof(toConvert));
             return personBuilder
                 .WithID(toConvert.id)
-                .WithName(parts[fieldSequence.IndexOf(nameof(IPerson.Name))])
-                .WithLastName(parts[fieldSequence.IndexOf(nameof(IPerson.LastName))])
-                .WithAddress(addressConverter.Convert(parts[fieldSequence.IndexOf(nameof(IPerson.Address))]))
-                .WithFavouriteColour(colourConverter.Convert(parts[fieldSequence.IndexOf(nameof(IPerson.FavouriteColour))]))
+                .WithName(GetValue(nameof(IPerson.Name), parts))
+                .WithLastName(GetValue(nameof(IPerson.LastName), parts))
+                .WithAddress(GetValue(nameof(IPerson.Address), parts))
+                .WithFavouriteColour(GetValue(nameof(IPerson.FavouriteColour), parts))
                 .Build();
         }
 
@@ -50,24 +58,41 @@ namespace CSVDataSource.Converters
             return (toConvert.ID, ToString(toConvert));
         }
 
-        private string ToString(IPerson person) => string.Join(separator, ToArray(person));
+        private string ToString(IPerson person) => string.Join(Separator, ToArray(person));
 
         private string[] ToArray(IPerson person)
         {
-            string[] result = new string[fieldSequence.Count];
-            Type t = person.GetType();
-            foreach (string field in fieldSequence)
+            string[] result = new string[FieldSequence.Count];
+            foreach (string field in FieldSequence)
             {
-                int index = fieldSequence.IndexOf(field);
-                object value = t.GetProperty(field).GetValue(person);
-                if (field.Equals(nameof(IPerson.Address)))
-                    result[index] = addressConverter.Convert((IAddress)value);
-                else if (field.Equals(nameof(IPerson.FavouriteColour)))
-                    result[index] = colourConverter.Convert((Color)value);
-                else
-                    result[index] = value.ToString();
+                int index = FieldSequence.IndexOf(field);
+                result[index] = GetValue(field, person, person.GetType()).ToString();
             }
             return result;
         }
+
+        private dynamic GetValue(string property, string[] parts)
+            => ConvertProperty(property, parts[FieldSequence.IndexOf(property)]);
+
+        private dynamic GetValue(string property, IPerson person, Type t)
+            => ConvertProperty(property, t.GetProperty(property).GetValue(person));
+
+        private dynamic ConvertProperty(string property, dynamic value)
+        {
+            if (fieldConverters.ContainsKey(property))
+                value = fieldConverters[property](value);
+            return value;
+        }
+
+        /// <summary>
+        /// Casts an object to <typeparamref name="T"/>.
+        /// Used as a little hack to ensure returning the correct type when
+        /// converting properties of a person.
+        /// Called using reflection.
+        /// </summary>
+        /// <typeparam name="T">The type to cast to</typeparam>
+        /// <param name="o">The <see cref="object"/> to cast</param>
+        /// <returns><paramref name="o"/> casted as <typeparamref name="T"/></returns>
+        private T Cast<T>(object o) => (T)o;
     }
 }
