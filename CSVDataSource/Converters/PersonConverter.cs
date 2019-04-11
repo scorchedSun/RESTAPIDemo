@@ -1,5 +1,6 @@
 ﻿using Contracts;
 using CSVDataSource.Contracts;
+using Exceptions;
 using Ninject;
 using System;
 using System.Collections.Generic;
@@ -11,29 +12,25 @@ namespace CSVDataSource.Converters
     {
         private readonly IConverter<string, Color> colourConverter;
         private readonly IConverter<string, IAddress> addressConverter;
-        private readonly IPersonBuilder personBuilder;
+        private readonly IPersonBuilderFactory personBuilderFactory;
         private readonly ICSVDataSourceConfiguration configuration;
         private string Separator => configuration.Separator;
         private IList<string> FieldSequence => configuration.FieldSequence;
 
-        private readonly IDictionary<string, Func<dynamic, dynamic>> fieldConverters;
+        private IDictionary<string, Func<dynamic, dynamic>> propertyConverters;
 
         public PersonConverter(IConverter<string, Color> colourConverter,
                                IConverter<string, IAddress> addressConverter,
-                               IPersonBuilder personBuilder,
+                               IPersonBuilderFactory personBuilderFactory,
                                [Named(nameof(IPerson))] ICSVDataSourceConfiguration configuration)
 
         {
             this.colourConverter = colourConverter;
             this.addressConverter = addressConverter;
-            this.personBuilder = personBuilder;
+            this.personBuilderFactory = personBuilderFactory;
             this.configuration = configuration;
 
-            fieldConverters = new Dictionary<string, Func<dynamic, dynamic>>
-            {
-                [nameof(IPerson.Address)] = new Func<dynamic, dynamic>((dynamic value) => this.addressConverter.Convert(value)),
-                [nameof(IPerson.FavouriteColour)] = new Func<dynamic, dynamic>((dynamic value) => this.colourConverter.Convert(value))
-            };
+            CreatePropertyConverterMappings();
         }
 
         public override IPerson Convert((int id, string data) toConvert)
@@ -41,9 +38,10 @@ namespace CSVDataSource.Converters
             if (toConvert.data is null) throw new ArgumentNullException(nameof(toConvert.data));
 
             string[] parts = toConvert.data.Split(new[] { Separator }, StringSplitOptions.None);
-            if (parts.Length != FieldSequence.Count)
-                throw new FormatException(nameof(toConvert));
-            return personBuilder
+            parts = TrimEntries(parts);
+            EnsureNumberOfPartsIsValid(parts);
+
+            return personBuilderFactory.Create()
                 .WithID(toConvert.id)
                 .WithName(GetValue(nameof(IPerson.Name), parts))
                 .WithLastName(GetValue(nameof(IPerson.LastName), parts))
@@ -56,6 +54,30 @@ namespace CSVDataSource.Converters
         {
             if (toConvert is null) throw new ArgumentNullException(nameof(toConvert));
             return (toConvert.ID, ToString(toConvert));
+        }
+
+        private void CreatePropertyConverterMappings()
+        {
+            propertyConverters = new Dictionary<string, Func<dynamic, dynamic>>
+            {
+                [nameof(IPerson.Address)] = new Func<dynamic, dynamic>((dynamic value) => this.addressConverter.Convert(value)),
+                [nameof(IPerson.FavouriteColour)] = new Func<dynamic, dynamic>((dynamic value) => this.colourConverter.Convert(value))
+            };
+        }
+
+        private void EnsureNumberOfPartsIsValid(string[] parts)
+        {
+            if (parts.Length < FieldSequence.Count)
+                throw new TooFewFieldsException(parts.Length, FieldSequence.Count);
+            else if (parts.Length > FieldSequence.Count)
+                throw new TooManyFieldsException(parts.Length, FieldSequence.Count);
+        }
+
+        private string[] TrimEntries(string[] array)
+        {
+            for (int i = 0; i < array.Length; i++)
+                array[i] = array[i].Trim();
+            return array;
         }
 
         private string ToString(IPerson person) => string.Join(Separator, ToArray(person));
@@ -79,8 +101,8 @@ namespace CSVDataSource.Converters
 
         private dynamic ConvertProperty(string property, dynamic value)
         {
-            if (fieldConverters.ContainsKey(property))
-                value = fieldConverters[property](value);
+            if (propertyConverters.ContainsKey(property))
+                value = propertyConverters[property](value);
             return value;
         }
 

@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Models.Builders;
+using Models.Factories;
 using Newtonsoft.Json.Serialization;
 using Ninject;
 using Ninject.Activation;
@@ -25,7 +25,7 @@ namespace RESTAPIDemo
 
         private readonly AsyncLocal<Scope> scopeProvider = new AsyncLocal<Scope>();
 
-        private readonly ILogger logger = new ConsoleLogger();
+        private readonly ILogger logger = new DiagnosticsLogger();
 
         // The IoC's kernel
         private IKernel Kernel { get; set; }
@@ -117,8 +117,9 @@ namespace RESTAPIDemo
         /// <returns>The <paramref name="kernel"/></returns>
         private IKernel CreateBindings(IKernel kernel)
         {
-            kernel.Bind<IPersonBuilder>().ToMethod(_ => PersonBuilder.Create());
-            kernel.Bind<IAddressBuilder>().ToMethod(_ => AddressBuilder.Create());
+            kernel.Bind<ILogger>().ToConstant(logger).InSingletonScope();
+            kernel.Bind<IPersonBuilderFactory>().To(typeof(PersonBuilderFactory));
+            kernel.Bind<IAddressBuilderFactory>().To(typeof(AddressBuilderFactory));
             kernel.Bind<IPersonRepository>().To(typeof(PersonRepository));
 
             DataSourceTypeBinder binder = new DataSourceTypeBinder(new Dictionary<string, string>(Configuration.AsEnumerable()));

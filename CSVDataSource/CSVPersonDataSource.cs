@@ -1,8 +1,10 @@
 ﻿using Contracts;
 using CSVDataSource.Contracts;
+using Exceptions;
 using Ninject;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 
@@ -10,6 +12,11 @@ namespace CSVDataSource
 {
     public class CSVPersonDataSource : IDataSource<IPerson>
     {
+        [Inject]
+#pragma warning disable 649
+        private readonly ILogger logger;
+#pragma warning restore 
+
         private readonly ICSVDataSourceConfiguration configuration;
         private string FilePath => configuration.Path;
 
@@ -29,7 +36,15 @@ namespace CSVDataSource
         public IList<IPerson> LoadAll()
         {
             toConvert.Clear();
-            return converter.Convert(ProcessLines(File.ReadAllLines(FilePath)));
+            try
+            {
+                return converter.Convert(ProcessLines(File.ReadAllLines(FilePath)));
+            }
+            catch (Exception ex) when (ex is TooFewFieldsException || ex is TooManyFieldsException)
+            {
+                logger.Log(ex);
+                throw;
+            }
         }
 
         private IList<(int, string)> ProcessLines(string[] lines)

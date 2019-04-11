@@ -2,6 +2,7 @@ using Contracts;
 using CSVDataSource.Converters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Models.Builders;
+using Models.Factories;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,8 +19,8 @@ namespace CSVDataSource.Tests
         {
             personConverter = new PersonConverter(
                 new ColourConverter(),
-                new AddressConverter(AddressBuilder.Create()),
-                PersonBuilder.Create(),
+                new AddressConverter(new AddressBuilderFactory()),
+                new PersonBuilderFactory(),
                 CSVFileUtil.CreateMockConfiguration());
         }
 

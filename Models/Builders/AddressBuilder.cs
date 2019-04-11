@@ -1,4 +1,5 @@
 ﻿using Contracts;
+using System;
 
 namespace Models.Builders
 {
@@ -7,24 +8,32 @@ namespace Models.Builders
         , IAddressWithCityBuilder
         , IFinalAddressBuilder
     {
-        private string zipCode;
-        private string city;
+        private Address address;
 
-        private AddressBuilder() {}
+        private AddressBuilder() { address = new Address(); }
 
         public static IAddressBuilder Create() => new AddressBuilder();
 
-        public IAddress Build() => new Address(zipCode, city);
+        public IAddress Build()
+        {
+            var result = address;
+            address = null;
+            return result;
+        }
 
         public IFinalAddressBuilder WithCity(string city)
         {
-            this.city = city;
+            if (city is null) throw new ArgumentNullException(nameof(city));
+            if (city.Equals(string.Empty)) throw new ArgumentException(nameof(city));
+            address.City = city;
             return this;
         }
 
         public IAddressWithCityBuilder WithZipCode(string zipCode)
         {
-            this.zipCode = zipCode;
+            if (zipCode is null) throw new ArgumentNullException(nameof(zipCode));
+            if (zipCode.Equals(string.Empty)) throw new ArgumentException(nameof(zipCode));
+            address.ZipCode = zipCode;
             return this;
         }
     }

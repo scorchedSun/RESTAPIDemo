@@ -5,23 +5,16 @@ namespace Models
 {
     public class Person : IPerson
     {
-        public string Name { get; }
+        public string Name { get; internal set; }
 
-        public string LastName { get; }
+        public string LastName { get; internal set; }
 
-        public IAddress Address { get; }
+        public IAddress Address { get; internal set; }
 
-        public Color FavouriteColour { get; }
+        public Color FavouriteColour { get; internal set; }
 
-        public int ID { get; }
+        public int ID { get; internal set; }
 
-        internal Person(int id, string name, string lastName, IAddress address, Color favouriteColour)
-        {
-            ID = id;
-            Name = name;
-            LastName = lastName;
-            Address = address;
-            FavouriteColour = favouriteColour;
-        }
+        internal Person() {}
     }
 }

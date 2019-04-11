@@ -1,7 +1,7 @@
 ﻿using Contracts;
+using Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Models.Builders;
-using System;
+using Models.Factories;
 using System.Drawing;
 using TestUtils;
 using Utils;
@@ -14,18 +14,18 @@ namespace CSVDataSource.Converters.Tests
         private readonly IConverter<(int, string), IPerson> personConverter;
         private readonly IConverter<string, IAddress> addressConverter;
         private readonly IConverter<string, Color> colourConverter;
-        private readonly IPersonBuilder personBuilder;
+        private readonly IPersonBuilderFactory personBuilderFactory;
 
         public PersonConverterTest()
         {
-            personBuilder = PersonBuilder.Create();
+            personBuilderFactory = new PersonBuilderFactory();
 
-            addressConverter = new AddressConverter(AddressBuilder.Create());
+            addressConverter = new AddressConverter(new AddressBuilderFactory());
             colourConverter = new ColourConverter();
             personConverter = new PersonConverter(
                 colourConverter,
                 addressConverter,
-                personBuilder,
+                personBuilderFactory,
                 CSVFileUtil.CreateMockConfiguration());
         }
 
@@ -45,13 +45,19 @@ namespace CSVDataSource.Converters.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(FormatException))]
+        [ExpectedException(typeof(TooFewFieldsException))]
         [DataRow("")]
         [DataRow("a")]
         [DataRow("a,b")]
         [DataRow("a, b, c")]
+        public void PersonConverter_ConvertStringWithTooFewFields_ThrowsTooFewFieldsException(string toConvert) => personConverter.Convert((1, toConvert));
+
+        [TestMethod]
+        [ExpectedException(typeof(TooManyFieldsException))]
         [DataRow("a, b, c, d, e")]
-        public void PersonConverter_ConvertInvalidString_ThrowsFormatException(string toConvert) => personConverter.Convert((1, toConvert));
+        [DataRow("a, b, c, d, e, f")]
+        [DataRow("a, b, c, d, e, f, g")]
+        public void PersonConverter_ConvertStringWithTooManyFields_ThrowsTooManyFieldsException(string toConvert) => personConverter.Convert((1, toConvert));
 
         [TestMethod]
         [DataRow(1, "Test", "Tester", "00000", "Test City", "1")]
@@ -60,7 +66,7 @@ namespace CSVDataSource.Converters.Tests
         {
             IAddress address = addressConverter.Convert($"{zipCode} {city}");
             Color colour = colourConverter.Convert(colourCode);
-            IPerson person = personBuilder
+            IPerson person = personBuilderFactory.Create()
                 .WithID(id)
                 .WithName(name)
                 .WithLastName(lastName)

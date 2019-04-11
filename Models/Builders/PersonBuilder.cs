@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using Contracts;
 
 namespace Models.Builders
@@ -11,48 +12,51 @@ namespace Models.Builders
         , IPersonWithFavouriteColourBuilder
         , IFinalPersonBuilder
     {
-        private int id;
-        private string name;
-        private string lastName;
-        private IAddress address;
-        private Color colour;
+        private Person person;
 
-        private PersonBuilder() {}
+        private PersonBuilder() { person = new Person(); }
 
         public static IPersonBuilder Create() => new PersonBuilder();
 
         public IPerson Build()
         {
-            return new Person(id, name, lastName, address, colour);
+            var result = person;
+            person = null;
+            return result;
         }
 
         public IPersonWithFavouriteColourBuilder WithAddress(IAddress address)
         {
-            this.address = address;
+            if (address is null) throw new ArgumentNullException(nameof(address));
+            person.Address = address;
             return this;
         }
 
         public IFinalPersonBuilder WithFavouriteColour(Color colour)
         {
-            this.colour = colour;
+            person.FavouriteColour = colour;
             return this;
         }
 
         public IPersonWithNameBuilder WithID(int id)
         {
-            this.id = id;
+            person.ID = id;
             return this;
         }
 
         public IPersonWithAddressBuilder WithLastName(string lastName)
         {
-            this.lastName = lastName;
+            if (lastName is null) throw new ArgumentNullException(nameof(lastName));
+            if (lastName.Equals(string.Empty)) throw new ArgumentException(nameof(lastName));
+            person.LastName = lastName;
             return this;
         }
 
         public IPersonWithLastNameBuilder WithName(string name)
         {
-            this.name = name;
+            if (name is null) throw new ArgumentNullException(nameof(name));
+            if (name.Equals(string.Empty)) throw new ArgumentException(nameof(name));
+            person.Name = name;
             return this;
         }
     }

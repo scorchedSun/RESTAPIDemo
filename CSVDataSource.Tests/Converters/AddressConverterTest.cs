@@ -1,7 +1,7 @@
 ﻿using Contracts;
+using Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Models.Builders;
-using System;
+using Models.Factories;
 using System.Text.RegularExpressions;
 
 namespace CSVDataSource.Converters.Tests
@@ -9,13 +9,13 @@ namespace CSVDataSource.Converters.Tests
     [TestClass]
     public class AddressConverterTest
     {
-        private readonly IAddressBuilder addressBuilder;
+        private readonly IAddressBuilderFactory addressBuilderFactory;
         private readonly IConverter<string, IAddress> addressConverter;
 
         public AddressConverterTest()
         {
-            addressBuilder = AddressBuilder.Create();
-            addressConverter = new AddressConverter(addressBuilder);
+            addressBuilderFactory = new AddressBuilderFactory();
+            addressConverter = new AddressConverter(addressBuilderFactory);
         }
 
         [TestMethod]
@@ -30,17 +30,17 @@ namespace CSVDataSource.Converters.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(FormatException))]
+        [ExpectedException(typeof(InvalidFormattedAddressException))]
         [DataRow("232223")]
         [DataRow("Test")]
-        public void AddressConverter_ConvertStringWithOnePart_ThrowsFormatException(string value) => addressConverter.Convert(value);
+        public void AddressConverter_ConvertStringWithOnePart_ThrowsInvalidFormattedAddressException(string value) => addressConverter.Convert(value);
 
         [TestMethod]
         [DataRow("12313", "City")]
         [DataRow("32232", "Another City")]
         public void AddressConverter_ConvertingAddress_ProducesExpectedFormat(string zipCode, string city)
         {
-            IAddress address = addressBuilder
+            IAddress address = addressBuilderFactory.Create()
                 .WithZipCode(zipCode)
                 .WithCity(city)
                 .Build();

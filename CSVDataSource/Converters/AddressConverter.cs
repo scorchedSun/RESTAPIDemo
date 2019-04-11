@@ -1,4 +1,5 @@
 ﻿using Contracts;
+using Exceptions;
 using System;
 
 namespace CSVDataSource.Converters
@@ -6,20 +7,20 @@ namespace CSVDataSource.Converters
     public class AddressConverter : Utils.Converter<string, IAddress>
     {
         private const int NumberOfParts = 2;
+        private const char Separator = ' ';
 
-        private readonly IAddressBuilder addressBuilder;
+        private readonly IAddressBuilderFactory addressBuilderFactory;
 
-        public AddressConverter(IAddressBuilder addressBuilder) => this.addressBuilder = addressBuilder;
+        public AddressConverter(IAddressBuilderFactory addressBuilderFactory) => this.addressBuilderFactory = addressBuilderFactory;
 
         public override IAddress Convert(string toConvert)
         {
             if (toConvert is null) throw new ArgumentNullException(nameof(toConvert));
 
-            string[] parts = toConvert.Split(new[] { ' ' }, NumberOfParts);
-            if (parts.Length != NumberOfParts)
-                    throw new FormatException($"The address provided '{toConvert}' isn't formatted correctly. Excpected 2 entries separated by an whitespace.");
+            string[] parts = toConvert.Split(new[] { Separator }, NumberOfParts);
+            if (parts.Length != NumberOfParts) throw new InvalidFormattedAddressException(toConvert, NumberOfParts, Separator);
 
-            return addressBuilder
+            return addressBuilderFactory.Create()
                 .WithZipCode(parts[0])
                 .WithCity(parts[1])
                 .Build();
