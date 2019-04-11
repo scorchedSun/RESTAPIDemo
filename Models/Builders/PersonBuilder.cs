@@ -3,7 +3,13 @@ using Contracts;
 
 namespace Models.Builders
 {
-    public sealed class PersonBuilder : IFinalPersonBuilder
+    public sealed class PersonBuilder
+        : IPersonBuilder
+        , IPersonWithNameBuilder
+        , IPersonWithLastNameBuilder
+        , IPersonWithAddressBuilder
+        , IPersonWithFavouriteColourBuilder
+        , IFinalPersonBuilder
     {
         private int id;
         private string name;

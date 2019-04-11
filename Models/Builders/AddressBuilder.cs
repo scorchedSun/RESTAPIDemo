@@ -1,11 +1,11 @@
 ﻿using Contracts;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Models.Builders
 {
-    public sealed class AddressBuilder : IFinalAddressBuilder
+    public sealed class AddressBuilder
+        : IAddressBuilder
+        , IAddressWithCityBuilder
+        , IFinalAddressBuilder
     {
         private string zipCode;
         private string city;

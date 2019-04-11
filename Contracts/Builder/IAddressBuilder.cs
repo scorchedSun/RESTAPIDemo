@@ -11,7 +11,6 @@
     }
 
     public interface IFinalAddressBuilder
-        : IAddressBuilder, IAddressWithCityBuilder
     {
         IAddress Build();
     }

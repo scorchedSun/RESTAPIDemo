@@ -28,7 +28,6 @@ namespace Contracts
     }
 
     public interface IFinalPersonBuilder
-        : IPersonBuilder, IPersonWithNameBuilder, IPersonWithLastNameBuilder, IPersonWithAddressBuilder, IPersonWithFavouriteColourBuilder
     {
         IPerson Build();
     }
