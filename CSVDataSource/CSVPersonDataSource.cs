@@ -4,7 +4,6 @@ using Exceptions;
 using Ninject;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 
@@ -12,6 +11,9 @@ namespace CSVDataSource
 {
     public class CSVPersonDataSource : IDataSource<IPerson>
     {
+        private const string creationWithInvalidFileFormat = "Can't create a data source for the file '{0}' since it doesn't exist.";
+        private const string invalidEntryFormat = "Couldn't read entry at line {0} due to an error.";
+
 #pragma warning disable 649
         [Inject]
         public ILogger Logger { get; set; }
@@ -28,7 +30,7 @@ namespace CSVDataSource
         {
             this.configuration = configuration;
             if (!File.Exists(FilePath))
-                throw new ArgumentException($"Can't create a data source for the file '{FilePath}' since it doesn't exist.");
+                throw new ArgumentException(string.Format(creationWithInvalidFileFormat, FilePath));
             this.converter = converter;
         }
 
@@ -47,7 +49,7 @@ namespace CSVDataSource
                                             || ex is TooManyFieldsException
                                             || ex is InvalidFormattedAddressException)
                 {
-                    Logger.Log($"Couldn't read entry at line {value.id - 1} due to an error.", ex);
+                    Logger.Log(string.Format(invalidEntryFormat, value.id - 1), ex);
                 }
             }
             return persons;
