@@ -25,15 +25,14 @@ namespace CSVDataSource.Tests
         }
 
         [TestMethod]
-        public void CSVPersonDataSource_ReadingValidCSV_Succeeds()
+        public void CSVPersonDataSource_ReadingValidFile_Succeeds()
         {
-            var mockConfiguration = CSVFileUtil.CreateMockConfiguration();
-            mockConfiguration.Path = CSVFileUtil.CreateTestFile();
-            IDataSource<IPerson> personDataSource = new CSVPersonDataSource(mockConfiguration, personConverter);
+            CSVPersonDataSource personDataSource = CreateTestableDataSource(CSVFileUtil.CreateValidTestFile());
 
             IList<IPerson> persons = personDataSource.LoadAll();
 
             Assert.AreEqual(CSVFileUtil.NumberOfEntries, persons.Count);
+            Assert.AreEqual(0, Errors(personDataSource));
             AssertPersonsWereReadCorrectly(persons);
         }
 
@@ -41,12 +40,56 @@ namespace CSVDataSource.Tests
         [ExpectedException(typeof(ArgumentException))]
         public void CSVPersonDataSource_CreatingForNonExistantFile_NotPossible()
         {
-            string filePath = Path.GetRandomFileName();
+            string filePath = CSVFileUtil.GetNonExistantFile();
             Assert.IsFalse(File.Exists(filePath));
+
+            CreateTestableDataSource(filePath).LoadAll();
+        }
+
+        [TestMethod]
+        public void CSVPersonDataSource_EntriesWithTooFewFields_NotLoaded()
+        {
+            CSVPersonDataSource personDataSource = CreateTestableDataSource(CSVFileUtil.CreateFileWithTooFewFields());
+
+            IList<IPerson> persons = personDataSource.LoadAll();
+
+            Assert.AreEqual(0, persons.Count);
+            Assert.AreEqual(CSVFileUtil.NumberOfEntriesWithTooFewFields, Errors(personDataSource));
+        }
+
+        [TestMethod]
+        public void CSVPersonDataSource_EntriesWithTooManyfields_NotLoaded()
+        {
+            CSVPersonDataSource personDataSource = CreateTestableDataSource(CSVFileUtil.CreateFileWithTooManyFields());
+
+            IList<IPerson> persons = personDataSource.LoadAll();
+
+            Assert.AreEqual(0, persons.Count);
+            Assert.AreEqual(CSVFileUtil.NumberOfEntriesWithTooManyFields, Errors(personDataSource));
+        }
+
+        [TestMethod]
+        public void CSVPersonDataSource_EntriesWithInvalidFormattedAddresses_NotLoaded()
+        {
+            CSVPersonDataSource personDataSource = CreateTestableDataSource(CSVFileUtil.CreateFileWithInvalidFormattedAddresses());
+
+            IList<IPerson> persons = personDataSource.LoadAll();
+
+            Assert.AreEqual(0, persons.Count);
+            Assert.AreEqual(CSVFileUtil.NumberOfEntriesWithInvalidFormattedAddresses, Errors(personDataSource));
+        }
+
+        private int Errors(CSVPersonDataSource personDataSource)
+            => TestableLogger(personDataSource).Errors.Count;
+
+        private TestableLogger TestableLogger(CSVPersonDataSource personDataSource)
+            => (TestableLogger)personDataSource.Logger;
+
+        private CSVPersonDataSource CreateTestableDataSource(string filePath)
+        {
             var mockConfiguration = CSVFileUtil.CreateMockConfiguration();
             mockConfiguration.Path = filePath;
-
-            new CSVPersonDataSource(mockConfiguration, personConverter).LoadAll();
+            return new CSVPersonDataSource(mockConfiguration, personConverter) { Logger = new TestableLogger() };
         }
 
         private void AssertPersonsWereReadCorrectly(IList<IPerson> persons)

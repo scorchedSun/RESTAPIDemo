@@ -17,33 +17,28 @@ namespace RESTAPIDemo
         private readonly object mutex = new object();
 
         public void Log(string message, [CallerFilePath] string path = "", [CallerMemberName] string member = "")
+            => Log(info, message, path, member);
+
+        public void LogError(string message, [CallerFilePath] string path = "", [CallerMemberName] string member = "")
+            => Log(error, message, path, member);
+
+        public void Log(Exception exception, [CallerFilePath] string path = "", [CallerMemberName] string member = "")
+            => Log("", exception, path, member);
+
+        public void Log(string message, Exception exception, [CallerFilePath] string path = "", [CallerMemberName] string member = "")
+            => Log(error, message + (message.EndsWith(" ") ? "" : " ") + FormatException(exception), path, member);
+
+        private void Log(string level, string message, string path, string member)
         {
             lock (mutex)
             {
                 System.Diagnostics.Debug.WriteLine(string.Format(
                     baseFormat,
-                    info,
+                    level,
                     NowAsUniversal,
                     GetFileName(path),
                     member,
                     message));
-            }
-        }
-
-        public void Log(Exception exception, [CallerFilePath] string path = "", [CallerMemberName] string member = "") 
-            => Log("", exception, path, member);
-
-        public void Log(string message, Exception exception, [CallerFilePath] string path = "", [CallerMemberName] string member = "")
-        {
-            lock (mutex)
-            {
-                System.Diagnostics.Debug.WriteLine(string.Format(
-                    baseFormat,
-                    error,
-                    NowAsUniversal,
-                    GetFileName(path),
-                    member,
-                    message + FormatException(exception)));
             }
         }
 

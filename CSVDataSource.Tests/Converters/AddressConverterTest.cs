@@ -33,6 +33,7 @@ namespace CSVDataSource.Converters.Tests
         [ExpectedException(typeof(InvalidFormattedAddressException))]
         [DataRow("232223")]
         [DataRow("Test")]
+        [DataRow("")]
         public void AddressConverter_ConvertStringWithOnePart_ThrowsInvalidFormattedAddressException(string value) => addressConverter.Convert(value);
 
         [TestMethod]
