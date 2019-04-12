@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 
-namespace TestUtils
+namespace CSVDataSource.Tests.Helpers
 {
     public static class CSVFileUtil
     {

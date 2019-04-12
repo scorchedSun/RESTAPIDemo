@@ -1,7 +1,7 @@
 using Contracts;
 using CSVDataSource.Converters;
+using CSVDataSource.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Models.Builders;
 using Models.Factories;
 using System;
 using System.Collections.Generic;

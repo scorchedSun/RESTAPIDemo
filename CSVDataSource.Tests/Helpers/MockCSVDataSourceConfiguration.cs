@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using CSVDataSource.Contracts;
 
-namespace TestUtils
+namespace CSVDataSource.Tests.Helpers
 {
     public class MockCSVDataSourceConfiguration : ICSVDataSourceConfiguration
     {
