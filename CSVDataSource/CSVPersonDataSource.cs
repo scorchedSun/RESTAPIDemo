@@ -28,6 +28,9 @@ namespace CSVDataSource
             [Named(nameof(IPerson))] ICSVDataSourceConfiguration configuration,
             IConverter<(int, string), IPerson> converter)
         {
+            if (configuration is null) throw new ArgumentNullException(nameof(configuration));
+            if (converter is null) throw new ArgumentNullException(nameof(converter));
+
             this.configuration = configuration;
             if (!File.Exists(FilePath))
                 throw new ArgumentException(string.Format(creationWithInvalidFileFormat, FilePath));
@@ -55,6 +58,12 @@ namespace CSVDataSource
             return persons;
         }
 
+        public void WriteAll(IList<IPerson> entries)
+        {
+            if (entries is null) throw new ArgumentNullException(nameof(entries));
+            File.WriteAllLines(FilePath, converter.Convert(entries).Select(entry => entry.Item2));
+        }
+
         private IList<(int, string)> ProcessLines(string[] lines)
         {
             IList<(int, string)> processedLines = new List<(int, string)>();
@@ -66,7 +75,5 @@ namespace CSVDataSource
             }
             return processedLines;
         }
-
-        public void WriteAll(IList<IPerson> entries) => File.WriteAllLines(FilePath, converter.Convert(entries).Select(entry => entry.Item2));
     }
 }

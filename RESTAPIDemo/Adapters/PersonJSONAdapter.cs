@@ -1,5 +1,6 @@
 ﻿using Contracts;
 using Newtonsoft.Json;
+using System;
 
 namespace RESTAPIDemo.Facades
 {
@@ -28,6 +29,10 @@ namespace RESTAPIDemo.Facades
         [JsonProperty("color")]
         public string Color => person.FavouriteColour.Name.ToLower();
 
-        public PersonJSONAdapter(IPerson person) => this.person = person;
+        public PersonJSONAdapter(IPerson person)
+        {
+            if (person is null) throw new ArgumentNullException(nameof(person));
+            this.person = person;
+        }
     }
 }

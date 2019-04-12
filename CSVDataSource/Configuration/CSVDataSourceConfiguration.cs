@@ -25,6 +25,8 @@ namespace CSVDataSource.Configuration
             IDictionary<string, string> configuration)
             : base(name, configuration)
         {
+            if (name is null) throw new ArgumentNullException(nameof(name));
+            if (configuration is null) throw new ArgumentNullException(nameof(configuration));
             string configuredType = GetConfiguredType(configuration, Name);
             if (configuredType != expectedType) throw new InvalidDataSourceTypeException(name, configuredType, expectedType);
         }
@@ -38,11 +40,11 @@ namespace CSVDataSource.Configuration
             if (!int.TryParse(configuration[string.Format(dataSourceSettingsBase, Name, "NumberOfFields")], out int numberOfFields))
                 throw new FormatException(numberOfFieldsExceptionMessage);
 
-            string[] fieldSequence = new string[numberOfFields];
+            string[] fields = new string[numberOfFields];
             for (int i = 0; i < numberOfFields; i++)
-                fieldSequence[i] = configuration[string.Format(dataSourceSettingsBase, Name, string.Format(fieldSequenceFormat, i))];
+                fields[i] = configuration[string.Format(dataSourceSettingsBase, Name, string.Format(fieldSequenceFormat, i))];
 
-            return fieldSequence;
+            return fields;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -28,6 +29,8 @@ namespace DataSource
         /// <exception cref="AmbiguousFactoryMethodException">Thrown if the configuration type defines more than one factory method named according to <see cref="factoryMethodName"/></exception>
         public object Create(IDictionary<string, string> configuration, string dataSourceName)
         {
+            if (configuration is null) throw new ArgumentNullException(nameof(configuration));
+            if (dataSourceName is null) throw new ArgumentNullException(nameof(dataSourceName));
             IEnumerable<MethodInfo> methods = assembly.TypeOfConfiguration
                 .GetMethods(BindingFlags.Public | BindingFlags.Static)
                 .Where(method => method.Name.Equals(factoryMethodName));

@@ -24,7 +24,11 @@ namespace DataSource
             .ExportedTypes
             .Single(type => type.GetTypeInfo().ImplementedInterfaces.Contains(TypeOfConfigurationInterface));
 
-        public DataSourceAssembly(string dataSourceType) => this.dataSourceType = dataSourceType;
+        public DataSourceAssembly(string dataSourceType)
+        {
+            if (dataSourceType is null) throw new ArgumentNullException(nameof(dataSourceType));
+            this.dataSourceType = dataSourceType;
+        }
 
         private string FileName => dataSourceType.ToUpper() + assemblyBase + fileExtension;
 

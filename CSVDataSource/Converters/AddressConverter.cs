@@ -11,7 +11,11 @@ namespace CSVDataSource.Converters
 
         private readonly IAddressBuilderFactory addressBuilderFactory;
 
-        public AddressConverter(IAddressBuilderFactory addressBuilderFactory) => this.addressBuilderFactory = addressBuilderFactory;
+        public AddressConverter(IAddressBuilderFactory addressBuilderFactory)
+        {
+            if (addressBuilderFactory is null) throw new ArgumentNullException(nameof(addressBuilderFactory));
+            this.addressBuilderFactory = addressBuilderFactory;
+        }
 
         public override IAddress Convert(string toConvert)
         {

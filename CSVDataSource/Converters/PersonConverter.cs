@@ -25,6 +25,11 @@ namespace CSVDataSource.Converters
                                [Named(nameof(IPerson))] ICSVDataSourceConfiguration configuration)
 
         {
+            if (colourConverter is null) throw new ArgumentNullException(nameof(colourConverter));
+            if (addressConverter is null) throw new ArgumentNullException(nameof(addressConverter));
+            if (personBuilderFactory is null) throw new ArgumentNullException(nameof(personBuilderFactory));
+            if (configuration is null) throw new ArgumentNullException(nameof(configuration));
+
             this.colourConverter = colourConverter;
             this.addressConverter = addressConverter;
             this.personBuilderFactory = personBuilderFactory;
@@ -35,7 +40,7 @@ namespace CSVDataSource.Converters
 
         public override IPerson Convert((int id, string data) toConvert)
         {
-            if (toConvert.data is null) throw new ArgumentNullException(nameof(toConvert.data));
+            if (toConvert.data is null) throw new ArgumentNullException(nameof(toConvert));
 
             string[] parts = toConvert.data.Split(new[] { Separator }, StringSplitOptions.None);
             parts = TrimEntries(parts);

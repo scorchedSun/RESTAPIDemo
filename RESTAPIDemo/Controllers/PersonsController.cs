@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using Contracts;
@@ -17,7 +18,11 @@ namespace RESTAPIDemo.Controllers
     {
         private readonly IPersonRepository repository;
 
-        public PersonsController(IPersonRepository repository) => this.repository = repository;
+        public PersonsController(IPersonRepository repository)
+        {
+            if (repository is null) throw new ArgumentNullException(nameof(repository));
+            this.repository = repository;
+        }
 
         // GET api/persons
         [HttpGet]

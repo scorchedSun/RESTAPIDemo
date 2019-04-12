@@ -40,6 +40,8 @@ namespace DataSource
         /// <exception cref="InvalidDataSourceTypeException">Thrown if the data source type configured in the application settings isn't in the list of supported types</exception>
         public IKernel Bind<T>(IKernel kernel)
         {
+            if (kernel is null) throw new ArgumentNullException(nameof(kernel));
+
             string dataSourceId = dataSourceTypeIds[typeof(T)];
             string dataSourceType = DataSourceConfiguration.GetConfiguredType(appConfiguration, dataSourceId);
             if (!IsDataSourceTypeValid(dataSourceType))

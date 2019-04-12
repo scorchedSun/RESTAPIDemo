@@ -1,4 +1,5 @@
 ﻿using Contracts;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -10,7 +11,11 @@ namespace Repositories
     {
         private readonly IList<IPerson> cache;
 
-        public PersonRepository(IDataSource<IPerson> dataSource) => cache = dataSource.LoadAll();
+        public PersonRepository(IDataSource<IPerson> dataSource)
+        {
+            if (dataSource is null) throw new ArgumentNullException(nameof(dataSource));
+            cache = dataSource.LoadAll();
+        }
 
         public IPerson Get(int id)
         {

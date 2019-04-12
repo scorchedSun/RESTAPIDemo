@@ -1,4 +1,5 @@
 ﻿using Contracts;
+using System;
 using System.Collections.Generic;
 
 namespace DataSource
@@ -20,6 +21,8 @@ namespace DataSource
             string name,
             IDictionary<string, string> configuration)
         {
+            if (name is null) throw new ArgumentNullException(nameof(name));
+            if (configuration is null) throw new ArgumentNullException(nameof(configuration));
             this.configuration = configuration;
             Name = name;
         }
@@ -32,7 +35,12 @@ namespace DataSource
         /// Gets the string representation of the physical data source's type.
         /// </summary>
         /// <returns>The data source's type as specified in appsettings.json</returns>
-        public static string GetConfiguredType(IDictionary<string, string> configuration, string name) => configuration[string.Format(dataSourceSettingsBase, name, "Type")];
+        public static string GetConfiguredType(IDictionary<string, string> configuration, string name)
+        {
+            if (configuration is null) throw new ArgumentNullException(nameof(configuration));
+            if (name is null) throw new ArgumentNullException(nameof(name));
+            return configuration[string.Format(dataSourceSettingsBase, name, "Type")];
+        }
 
         /// <summary>
         /// Resolves the path to the physical representation of a data source using the application settings.
@@ -41,10 +49,10 @@ namespace DataSource
         /// <returns>The path to the data source's physical representation</returns>
         private string ResolveDataSourcePath()
         {
-            string path = configuration[string.Format(dataSourceSettingsBase, Name, "Path")];
-            if (!System.IO.Path.IsPathRooted(path))
-                path = System.IO.Path.GetFullPath(path);
-            return path;
+            string configuredPath = configuration[string.Format(dataSourceSettingsBase, Name, "Path")];
+            if (!System.IO.Path.IsPathRooted(configuredPath))
+                configuredPath = System.IO.Path.GetFullPath(configuredPath);
+            return configuredPath;
         }
     }
 }
