@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Runtime.Serialization;
 
 namespace Exceptions
 {
+    [Serializable]
     public class TooFewFieldsException : FormatException
     {
         public TooFewFieldsException() : base()
@@ -19,5 +21,10 @@ namespace Exceptions
         public TooFewFieldsException(int numberOfFields, int expectedNumberOfFields)
             : base($"Too few fields. Expected {expectedNumberOfFields}, got {numberOfFields}.")
         {}
+
+        protected TooFewFieldsException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+        }
     }
 }

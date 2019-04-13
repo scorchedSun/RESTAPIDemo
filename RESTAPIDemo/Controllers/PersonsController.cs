@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using Contracts;
+using Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RESTAPIDemo.Facades;
 using Utils;
-using Utils.Exceptions;
 
 namespace RESTAPIDemo.Controllers
 {

@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Runtime.Serialization;
 
 namespace Exceptions
 {
+    [Serializable]
     public class TooManyFieldsException : FormatException
     {
         public TooManyFieldsException() : base()
@@ -21,5 +21,10 @@ namespace Exceptions
         public TooManyFieldsException(int numberOfFields, int expectedNumberOfFields)
             : base($"Got too many fields. Expected {expectedNumberOfFields}, got {numberOfFields}.")
         {}
+
+        protected TooManyFieldsException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+        }
     }
 }

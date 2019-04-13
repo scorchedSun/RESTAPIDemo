@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Runtime.Serialization;
 
 namespace Exceptions
 {
+    [Serializable]
     public class InvalidFormattedAddressException : FormatException
     {
         public InvalidFormattedAddressException() : base()
@@ -19,5 +21,10 @@ namespace Exceptions
         public InvalidFormattedAddressException(string address, int expectedParts, char separator)
             : base($"The address provided '{address}' isn't formatted correctly. Excpected {expectedParts} entries separated by '{separator}'.")
         {}
+
+        protected InvalidFormattedAddressException(SerializationInfo info, StreamingContext context) 
+            : base(info, context)
+        {
+        }
     }
 }

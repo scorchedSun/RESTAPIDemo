@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Runtime.Serialization;
 
 namespace Exceptions
 {
+    [Serializable]
     public class AmbiguousFactoryMethodException : Exception
     {
         public AmbiguousFactoryMethodException() : base()
@@ -21,5 +21,10 @@ namespace Exceptions
         public AmbiguousFactoryMethodException(Type type, string factoryMethodName)
             : base($"The type {type.FullName} defines multiple methods named '{factoryMethodName}'")
         {}
+
+        protected AmbiguousFactoryMethodException(SerializationInfo info, StreamingContext context) 
+            : base(info, context)
+        {
+        }
     }
 }

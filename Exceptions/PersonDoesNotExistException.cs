@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Text;
+using System.Runtime.Serialization;
 
-namespace Utils.Exceptions
+namespace Exceptions
 {
+    [Serializable]
     public class PersonDoesNotExistException : Exception
     {
         public PersonDoesNotExistException() : base()
@@ -22,5 +21,10 @@ namespace Utils.Exceptions
         public PersonDoesNotExistException(int id)
             : base($"The person with the ID '{id}' doesn't exist")
         {}
+
+        protected PersonDoesNotExistException(SerializationInfo info, StreamingContext context) 
+            : base(info, context)
+        {
+        }
     }
 }

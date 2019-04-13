@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Runtime.Serialization;
 
 namespace Exceptions
 {
+    [Serializable]
     public class NoFactoryMethodException : MissingMethodException
     {
         public NoFactoryMethodException() : base()
@@ -17,6 +19,11 @@ namespace Exceptions
         }
 
         public NoFactoryMethodException(string className, string methodName) : base(className, methodName)
+        {
+        }
+
+        protected NoFactoryMethodException(SerializationInfo info, StreamingContext context) 
+            : base(info, context)
         {
         }
     }

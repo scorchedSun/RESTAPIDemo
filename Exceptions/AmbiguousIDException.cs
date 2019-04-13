@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Runtime.Serialization;
 
-namespace Utils.Exceptions
+namespace Exceptions
 {
+    [Serializable]
     public class AmbiguousIDException : Exception
     {
         public AmbiguousIDException() : base()
@@ -21,5 +21,10 @@ namespace Utils.Exceptions
         public AmbiguousIDException(int id)
             : base($"The ID '{id}' isn't unique")
         {}
+
+        protected AmbiguousIDException(SerializationInfo info, StreamingContext context) 
+            : base(info, context)
+        {
+        }
     }
 }

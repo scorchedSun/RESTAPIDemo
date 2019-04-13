@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Runtime.Serialization;
 
-namespace Utils.Exceptions
+namespace Exceptions
 {
+    [Serializable]
     public class InvalidColourCodeException : Exception
     {
         public InvalidColourCodeException() : base()
@@ -15,6 +17,11 @@ namespace Utils.Exceptions
 
         public InvalidColourCodeException(string code, Exception innerException) 
             : base($"The code '{code}' couldn't be matched to a colour", innerException)
+        {
+        }
+
+        protected InvalidColourCodeException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
     }

@@ -1,8 +1,8 @@
 using Contracts;
+using Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using TestUtils;
-using Utils.Exceptions;
 
 namespace Repositories.Tests
 {

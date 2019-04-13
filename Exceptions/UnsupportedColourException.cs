@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Drawing;
+using System.Runtime.Serialization;
 
-namespace Utils.Exceptions
+namespace Exceptions
 {
+    [Serializable]
     public class UnsupportedColourException : Exception
     {
         public UnsupportedColourException() : base()
@@ -19,6 +21,11 @@ namespace Utils.Exceptions
 
         public UnsupportedColourException(Color colour)
             : base($"The colour '{colour.Name}' isn't supported")
+        {
+        }
+
+        protected UnsupportedColourException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
     }

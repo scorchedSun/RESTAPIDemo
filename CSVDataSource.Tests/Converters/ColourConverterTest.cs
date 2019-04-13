@@ -1,8 +1,8 @@
-﻿using Utils.Exceptions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Drawing;
 using Utils;
 using Contracts;
+using Exceptions;
 
 namespace CSVDataSource.Converters.Tests
 {
