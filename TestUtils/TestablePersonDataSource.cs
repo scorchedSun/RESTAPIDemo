@@ -6,9 +6,12 @@ using System.Drawing;
 
 namespace TestUtils
 {
+    /// <summary>
+    /// Mock class for testing <see cref="IDataSource{IPerson}"/>.
+    /// </summary>
     public class TestablePersonDataSource : IDataSource<IPerson>
     {
-        public static uint InvalidID { get; } = 0u;
+        public static uint InvalidID { get; }
         public static uint ExistingID { get; } = 1u;
         public static uint AmbiguousID { get; } = 2u;
         public static Color InvalidColour { get; } = Color.Transparent;
@@ -20,6 +23,11 @@ namespace TestUtils
 
         public void WriteAll(IList<IPerson> entries) => Persons = entries;
 
+        /// <summary>
+        /// Create a <see cref="TestablePersonDataSource"/> containing one valid person
+        /// and two persons with ambigious IDs.
+        /// </summary>
+        /// <returns>A new <see cref="TestablePersonDataSource"/></returns>
         public static TestablePersonDataSource Create()
         {
             TestablePersonDataSource dataSource = new TestablePersonDataSource();

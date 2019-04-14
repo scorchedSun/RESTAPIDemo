@@ -5,6 +5,9 @@ using System.Drawing;
 
 namespace CSVDataSource
 {
+    /// <summary>
+    /// Binding for Ninject
+    /// </summary>
     public class Bindings : NinjectModule
     {
         public override void Load()

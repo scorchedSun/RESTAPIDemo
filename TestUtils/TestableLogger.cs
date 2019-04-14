@@ -5,9 +5,19 @@ using System.Runtime.CompilerServices;
 
 namespace TestUtils
 {
+    /// <summary>
+    /// Mock class for checking log entries in unit tests.
+    /// Writes messages into public lists so that they can be read externally.
+    /// </summary>
     public class TestableLogger : ILogger
     {
+        /// <summary>
+        /// Entries other than errors
+        /// </summary>
         public IList<string> RegularEntries { get; } = new List<string>();
+        /// <summary>
+        /// Entries that are error messages
+        /// </summary>
         public IList<string> Errors { get; } = new List<string>();
 
         public void Log(string message, [CallerFilePath] string path = "", [CallerMemberName] string member = "")

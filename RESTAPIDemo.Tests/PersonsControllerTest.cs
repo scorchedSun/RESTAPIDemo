@@ -19,7 +19,10 @@ namespace RESTAPIDemo.Tests
         public PersonsControllerTest()
         {
             repository = new PersonRepository(dataSource);
-            controller = new PersonsController(repository);
+            controller = new PersonsController(repository)
+            {
+                Logger = new TestableLogger()
+            };
         }
 
         [TestMethod]
@@ -48,6 +51,7 @@ namespace RESTAPIDemo.Tests
         {
             ObjectResult result = controller.Get(TestablePersonDataSource.AmbiguousID);
             Assert.AreEqual(StatusCodes.Status500InternalServerError, result.StatusCode);
+            Assert.AreEqual(1, ((TestableLogger)controller.Logger).Errors.Count);
         }
 
         [TestMethod]

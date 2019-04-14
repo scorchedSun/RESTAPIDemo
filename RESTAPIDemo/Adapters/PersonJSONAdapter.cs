@@ -29,6 +29,11 @@ namespace RESTAPIDemo.Facades
         [JsonProperty("color")]
         public string Color => person.FavouriteColour.Name.ToLower();
 
+        /// <summary>
+        /// Create a new <see cref="PersonJSONAdapter"/>.
+        /// </summary>
+        /// <param name="person">The <see cref="IPerson"/> to adapt from</param>
+        /// <exception cref="ArgumentNullException">If <see cref="null"/> is passed</exception>
         public PersonJSONAdapter(IPerson person)
         {
             if (person is null) throw new ArgumentNullException(nameof(person));

@@ -6,11 +6,15 @@ using Contracts;
 using Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Ninject;
 using RESTAPIDemo.Facades;
 using Utils;
 
 namespace RESTAPIDemo.Controllers
 {
+    /// <summary>
+    /// API endpoint regarding <see cref="IPerson"/>s.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     [Produces("application/json")]
@@ -18,6 +22,14 @@ namespace RESTAPIDemo.Controllers
     {
         private readonly IPersonRepository repository;
 
+        [Inject]
+        public ILogger Logger { get; set; }
+
+        /// <summary>
+        /// Create a new <see cref="PersonsController"/>.
+        /// </summary>
+        /// <param name="repository">The <see cref="IPersonRepository"/> to use</param>
+        /// <exception cref="ArgumentNullException">If <see cref="null"/> is passed.</exception>
         public PersonsController(IPersonRepository repository)
         {
             if (repository is null) throw new ArgumentNullException(nameof(repository));
@@ -26,7 +38,18 @@ namespace RESTAPIDemo.Controllers
 
         // GET api/persons
         [HttpGet]
-        public OkObjectResult Get() => Ok(ApplyAdapter(repository.GetAll()));
+        public ObjectResult Get()
+        {
+            try
+            {
+                return Ok(ApplyAdapter(repository.GetAll()));
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
 
         // GET api/persons/5
         [HttpGet("{id}")]
@@ -42,7 +65,13 @@ namespace RESTAPIDemo.Controllers
             }
             catch (AmbiguousIDException ambiguousID)
             {
+                Logger.Log(ambiguousID);
                 return StatusCode(StatusCodes.Status500InternalServerError, ambiguousID.Message);
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
 
@@ -60,7 +89,15 @@ namespace RESTAPIDemo.Controllers
                 return BadRequest(invalidName.Message);
             }
 
-            return Ok(ApplyAdapter(repository.GetByFavouriteColour(colour)));
+            try
+            {
+                return Ok(ApplyAdapter(repository.GetByFavouriteColour(colour)));
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         private IList<PersonJSONAdapter> ApplyAdapter(IList<IPerson> persons) => persons.Select(ApplyAdapter).ToList();
