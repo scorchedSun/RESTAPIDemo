@@ -13,7 +13,7 @@ namespace Models
 
         public Color FavouriteColour { get; internal set; }
 
-        public int ID { get; internal set; }
+        public uint ID { get; internal set; }
 
         internal Person() {}
     }

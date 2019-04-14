@@ -22,11 +22,11 @@ namespace CSVDataSource
         private readonly ICSVDataSourceConfiguration configuration;
         private string FilePath => configuration.Path;
 
-        private readonly IConverter<(int, string), IPerson> converter;
+        private readonly IConverter<(uint, string), IPerson> converter;
 
         public CSVPersonDataSource(
             [Named(nameof(IPerson))] ICSVDataSourceConfiguration configuration,
-            IConverter<(int, string), IPerson> converter)
+            IConverter<(uint, string), IPerson> converter)
         {
             if (configuration is null) throw new ArgumentNullException(nameof(configuration));
             if (converter is null) throw new ArgumentNullException(nameof(converter));
@@ -39,10 +39,10 @@ namespace CSVDataSource
 
         public IList<IPerson> LoadAll()
         {
-            IList<(int, string)> valuesToConvert = ProcessLines(File.ReadAllLines(FilePath));
+            IList<(uint, string)> valuesToConvert = ProcessLines(File.ReadAllLines(FilePath));
             IList<IPerson> persons = new List<IPerson>();
 
-            foreach ((int id, string data) value in valuesToConvert)
+            foreach ((uint id, string data) value in valuesToConvert)
             {
                 try
                 {
@@ -64,10 +64,10 @@ namespace CSVDataSource
             File.WriteAllLines(FilePath, converter.Convert(entries).Select(entry => entry.Item2));
         }
 
-        private IList<(int, string)> ProcessLines(string[] lines)
+        private IList<(uint, string)> ProcessLines(string[] lines)
         {
-            IList<(int, string)> processedLines = new List<(int, string)>();
-            for (int i = 0; i < lines.Length; i++)
+            IList<(uint, string)> processedLines = new List<(uint, string)>();
+            for (uint i = 0; i < lines.Length; i++)
             {
                 string line = lines[i];
                 if (!string.IsNullOrEmpty(line))

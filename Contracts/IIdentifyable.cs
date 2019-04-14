@@ -5,6 +5,6 @@
     /// </summary>
     public interface IIdentifyable
     {
-        int ID { get; }
+        uint ID { get; }
     }
 }

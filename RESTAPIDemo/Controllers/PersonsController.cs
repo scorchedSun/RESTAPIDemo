@@ -30,7 +30,7 @@ namespace RESTAPIDemo.Controllers
 
         // GET api/persons/5
         [HttpGet("{id}")]
-        public ObjectResult Get(int id)
+        public ObjectResult Get(uint id)
         {
             try
             {

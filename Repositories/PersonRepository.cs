@@ -17,7 +17,7 @@ namespace Repositories
             cache = dataSource.LoadAll();
         }
 
-        public IPerson Get(int id)
+        public IPerson Get(uint id)
         {
             EnsureIsValid(id);
             return cache.Single(entry => entry.ID == id);
@@ -28,7 +28,7 @@ namespace Repositories
         public IList<IPerson> GetByFavouriteColour(Color colour)
             => cache.Where(entry => entry.FavouriteColour == colour).ToList();
 
-        private void EnsureIsValid(int id)
+        private void EnsureIsValid(uint id)
         {
             int matches = cache.Count(entry => entry.ID == id);
 

@@ -13,7 +13,7 @@ namespace CSVDataSource.Tests
     [TestClass]
     public class CSVPersonDataSourceTest
     {
-        private readonly IConverter<(int, string), IPerson> personConverter;
+        private readonly IConverter<(uint, string), IPerson> personConverter;
 
         public CSVPersonDataSourceTest()
         {
@@ -96,9 +96,9 @@ namespace CSVDataSource.Tests
         {
             foreach (var person in persons)
             {
-                (int id, string data) = personConverter.Convert(person);
+                (uint id, string data) = personConverter.Convert(person);
                 Assert.IsTrue(CSVFileUtil.EntryExists(data));
-                Assert.AreEqual(CSVFileUtil.IndexOf(data) + 1, id);
+                Assert.AreEqual(CSVFileUtil.IndexOf(data) + 1u, id);
             }
         }
     }

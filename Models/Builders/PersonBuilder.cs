@@ -38,8 +38,9 @@ namespace Models.Builders
             return this;
         }
 
-        public IPersonWithNameBuilder WithID(int id)
+        public IPersonWithNameBuilder WithID(uint id)
         {
+            if (id == 0) throw new ArgumentOutOfRangeException(nameof(id) + " needs to be larger than 0");
             person.ID = id;
             return this;
         }

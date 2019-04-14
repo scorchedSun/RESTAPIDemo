@@ -7,9 +7,9 @@ namespace TestUtils
 {
     public class TestablePersonDataSource : IDataSource<IPerson>
     {
-        public static int InvalidID { get; } = -1;
-        public static int ExistingID { get; } = 1;
-        public static int AmbiguousID { get; } = 2;
+        public static uint InvalidID { get; } = 0u;
+        public static uint ExistingID { get; } = 1u;
+        public static uint AmbiguousID { get; } = 2u;
         public static Color InvalidColour { get; } = Color.Transparent;
         public static Color ValidColour { get; } = Color.Blue;
 
@@ -40,7 +40,7 @@ namespace TestUtils
                 .Build();
         }
 
-        private static IPerson CreateTestPerson(int id, Color colour)
+        private static IPerson CreateTestPerson(uint id, Color colour)
         {
             IPersonBuilder personBuilder = PersonBuilder.Create();
             return personBuilder

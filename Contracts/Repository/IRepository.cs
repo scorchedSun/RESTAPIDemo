@@ -20,6 +20,6 @@ namespace Contracts
         /// </summary>
         /// <param name="id">The instance's ID</param>
         /// <returns>The instance</returns>
-        T Get(int id);
+        T Get(uint id);
     }
 }

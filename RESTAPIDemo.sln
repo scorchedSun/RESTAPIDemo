@@ -23,9 +23,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RESTAPIDemo.Tests", "RESTAP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exceptions", "Exceptions\Exceptions.csproj", "{E9994D6C-6824-4DF5-86B1-A04DB07D8117}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataSource", "DataSource\DataSource.csproj", "{80691EA2-A322-48CC-90A9-6607951EEA8A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataSource", "DataSource\DataSource.csproj", "{80691EA2-A322-48CC-90A9-6607951EEA8A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repositories.Tests", "Repositories.Tests\Repositories.Tests.csproj", "{589E70BA-2E15-4852-B093-E66DB2A31305}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models.Tests", "Models.Tests\Models.Tests.csproj", "{C66AD9F4-97F1-43F9-8E2C-36EA0CB382EB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +83,10 @@ Global
 		{589E70BA-2E15-4852-B093-E66DB2A31305}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{589E70BA-2E15-4852-B093-E66DB2A31305}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{589E70BA-2E15-4852-B093-E66DB2A31305}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C66AD9F4-97F1-43F9-8E2C-36EA0CB382EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C66AD9F4-97F1-43F9-8E2C-36EA0CB382EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C66AD9F4-97F1-43F9-8E2C-36EA0CB382EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C66AD9F4-97F1-43F9-8E2C-36EA0CB382EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

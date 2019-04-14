@@ -12,7 +12,7 @@ namespace RESTAPIDemo.Facades
         private readonly IPerson person;
 
         [JsonProperty("id")]
-        public int ID => person.ID;
+        public uint ID => person.ID;
 
         [JsonProperty("name")]
         public string Name => person.Name;

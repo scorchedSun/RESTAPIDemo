@@ -8,7 +8,7 @@ using System.Drawing;
 
 namespace CSVDataSource.Converters
 {
-    public class PersonConverter : Utils.Converter<(int id, string data), IPerson>
+    public class PersonConverter : Utils.Converter<(uint id, string data), IPerson>
     {
         private readonly IConverter<string, Color> colourConverter;
         private readonly IConverter<string, IAddress> addressConverter;
@@ -38,7 +38,7 @@ namespace CSVDataSource.Converters
             CreatePropertyConverterMappings();
         }
 
-        public override IPerson Convert((int id, string data) toConvert)
+        public override IPerson Convert((uint id, string data) toConvert)
         {
             if (toConvert.data is null) throw new ArgumentNullException(nameof(toConvert));
 
@@ -55,7 +55,7 @@ namespace CSVDataSource.Converters
                 .Build();
         }
 
-        public override (int id, string data) Convert(IPerson toConvert)
+        public override (uint id, string data) Convert(IPerson toConvert)
         {
             if (toConvert is null) throw new ArgumentNullException(nameof(toConvert));
             return (toConvert.ID, ToString(toConvert));

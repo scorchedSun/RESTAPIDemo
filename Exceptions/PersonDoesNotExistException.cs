@@ -18,7 +18,7 @@ namespace Exceptions
         {
         }
 
-        public PersonDoesNotExistException(int id)
+        public PersonDoesNotExistException(uint id)
             : base($"The person with the ID '{id}' doesn't exist")
         {}
 

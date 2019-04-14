@@ -18,7 +18,7 @@ namespace Exceptions
         {
         }
 
-        public AmbiguousIDException(int id)
+        public AmbiguousIDException(uint id)
             : base($"The ID '{id}' isn't unique")
         {}
 

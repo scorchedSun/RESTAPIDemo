@@ -4,7 +4,7 @@ namespace Contracts
 {
     public interface IPersonBuilder
     {
-        IPersonWithNameBuilder WithID(int id);
+        IPersonWithNameBuilder WithID(uint id);
     }
 
     public interface IPersonWithNameBuilder

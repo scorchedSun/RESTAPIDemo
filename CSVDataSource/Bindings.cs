@@ -11,7 +11,7 @@ namespace CSVDataSource
         {
             Bind<IConverter<string, IAddress>>().To(typeof(AddressConverter));
             Bind<IConverter<string, Color>>().To(typeof(ColourConverter));
-            Bind<IConverter<(int, string), IPerson>>().To(typeof(PersonConverter));
+            Bind<IConverter<(uint, string), IPerson>>().To(typeof(PersonConverter));
             Bind<IDataSource<IPerson>>().To(typeof(CSVPersonDataSource));
         }
     }

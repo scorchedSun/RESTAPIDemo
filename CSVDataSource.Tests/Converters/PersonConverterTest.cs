@@ -12,7 +12,7 @@ namespace CSVDataSource.Converters.Tests
     [TestClass]
     public class PersonConverterTest
     {
-        private readonly IConverter<(int, string), IPerson> personConverter;
+        private readonly IConverter<(uint, string), IPerson> personConverter;
         private readonly IConverter<string, IAddress> addressConverter;
         private readonly IConverter<string, Color> colourConverter;
         private readonly IPersonBuilderFactory personBuilderFactory;
@@ -31,9 +31,9 @@ namespace CSVDataSource.Converters.Tests
         }
 
         [TestMethod]
-        [DataRow(1, "Test", "Tester", "00000", "Test City", "1")]
-        [DataRow(2, "Just", "Another-Test", "11111", "Some City", "7")]
-        public void PersonConverter_ConvertValidString_Succeeds(int id, string name, string lastName, string zipCode, string city, string colourCode)
+        [DataRow(1u, "Test", "Tester", "00000", "Test City", "1")]
+        [DataRow(2u, "Just", "Another-Test", "11111", "Some City", "7")]
+        public void PersonConverter_ConvertValidString_Succeeds(uint id, string name, string lastName, string zipCode, string city, string colourCode)
         {
             IPerson person = personConverter.Convert((id, $"{lastName}, {name}, {zipCode} {city}, {colourCode}"));
 
@@ -61,9 +61,9 @@ namespace CSVDataSource.Converters.Tests
         public void PersonConverter_ConvertStringWithTooManyFields_ThrowsTooManyFieldsException(string toConvert) => personConverter.Convert((1, toConvert));
 
         [TestMethod]
-        [DataRow(1, "Test", "Tester", "00000", "Test City", "1")]
-        [DataRow(2, "Just", "Another-Test", "11111", "Some City", "7")]
-        public void PersonConverter_ConvertPerson_ProducesExpectedFormat(int id, string name, string lastName, string zipCode, string city, string colourCode)
+        [DataRow(1u, "Test", "Tester", "00000", "Test City", "1")]
+        [DataRow(2u, "Just", "Another-Test", "11111", "Some City", "7")]
+        public void PersonConverter_ConvertPerson_ProducesExpectedFormat(uint id, string name, string lastName, string zipCode, string city, string colourCode)
         {
             IAddress address = addressConverter.Convert($"{zipCode} {city}");
             Color colour = colourConverter.Convert(colourCode);
@@ -75,7 +75,7 @@ namespace CSVDataSource.Converters.Tests
                 .WithFavouriteColour(colour)
                 .Build();
 
-            (int id, string data) converted = personConverter.Convert(person);
+            (uint id, string data) converted = personConverter.Convert(person);
 
             Assert.AreEqual(id, converted.id);
             Assert.AreEqual($"{lastName}, {name}, {zipCode} {city}, {colourCode}", converted.data);
