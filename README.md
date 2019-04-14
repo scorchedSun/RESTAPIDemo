@@ -29,3 +29,4 @@ GET api/persons/1
 * [Ninject](https://github.com/ninject/Ninject/blob/master/README.md)
 * [SonarQube](https://www.sonarqube.org/)
 * [Stryker.NET](https://github.com/stryker-mutator/stryker-net/blob/master/README.md)
+* [Coverlet](https://github.com/tonerdo/coverlet/blob/master/README.md)
