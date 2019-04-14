@@ -3,6 +3,9 @@ using System.Drawing;
 
 namespace Models
 {
+    /// <summary>
+    /// Represents a person.
+    /// </summary>
     public class Person : IPerson
     {
         public string Name { get; internal set; }
@@ -15,6 +18,9 @@ namespace Models
 
         public uint ID { get; internal set; }
 
+        /// <summary>
+        /// Should never be instantiated directly. Use <see cref="PersonBuilder"/>
+        /// </summary>
         internal Person() {}
     }
 }

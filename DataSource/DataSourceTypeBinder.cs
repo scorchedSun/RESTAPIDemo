@@ -23,12 +23,18 @@ namespace DataSource
             "csv"
         };
 
-        private readonly IDictionary<string, string> appConfiguration;
+        // The configuration containing the data source's settings
+        private readonly IDictionary<string, string> configuration;
 
-        public DataSourceTypeBinder(IDictionary<string, string> appConfiguration)
+        /// <summary>
+        /// Creates a <see cref="DataSourceConfigurationCreator"/>.
+        /// </summary>
+        /// <param name="configuration">Contains the data source's settings</param>
+        /// <exception cref="ArgumentNullException">If <see cref="null"/> is passed</exception>
+        public DataSourceTypeBinder(IDictionary<string, string> configuration)
         {
-            if (appConfiguration is null) throw new ArgumentNullException(nameof(appConfiguration));
-            this.appConfiguration = appConfiguration;
+            if (configuration is null) throw new ArgumentNullException(nameof(configuration));
+            this.configuration = configuration;
         }
 
         /// <summary>
@@ -43,20 +49,25 @@ namespace DataSource
             if (kernel is null) throw new ArgumentNullException(nameof(kernel));
 
             string dataSourceId = dataSourceTypeIds[typeof(T)];
-            string dataSourceType = DataSourceConfiguration.GetConfiguredType(appConfiguration, dataSourceId);
+            string dataSourceType = DataSourceConfiguration.GetConfiguredType(this.configuration, dataSourceId);
             if (!IsDataSourceTypeValid(dataSourceType))
                 throw new InvalidDataSourceTypeException(dataSourceId, dataSourceType);
 
             DataSourceAssembly dataSourceAssembly = new DataSourceAssembly(dataSourceType);
             DataSourceConfigurationCreator configurationCreator = new DataSourceConfigurationCreator(dataSourceAssembly);
-            object configuration = configurationCreator.Create(appConfiguration, dataSourceId);
+            object config = configurationCreator.Create(this.configuration, dataSourceId);
 
-            kernel.Bind(dataSourceAssembly.TypeOfConfigurationInterface).ToMethod(_ => configuration).Named(typeof(T).Name);
+            kernel.Bind(dataSourceAssembly.TypeOfConfigurationInterface).ToConstant(config).Named(typeof(T).Name);
             kernel.Load(dataSourceAssembly.UnderlyingAssembly);
 
             return kernel;
         }
 
+        /// <summary>
+        /// Checks whether a given data source type is in the list of supported data sources.
+        /// </summary>
+        /// <param name="type">The data source type</param>
+        /// <returns><see cref="true"/> if the type is supported, <see cref="false"/> otherwise</returns>
         private bool IsDataSourceTypeValid(string type) => validDataSourceTypes.Contains(type.ToLower());
     }
 }

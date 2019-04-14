@@ -1,5 +1,6 @@
 ﻿using Contracts;
 using Models.Builders;
+using Models.Factories;
 using System.Collections.Generic;
 using System.Drawing;
 
@@ -33,7 +34,7 @@ namespace TestUtils
 
         private static IAddress CreateTestAddress()
         {
-            IAddressBuilder addressBuilder = AddressBuilder.Create();
+            IAddressBuilder addressBuilder = new AddressBuilderFactory().Create();
             return addressBuilder
                 .WithZipCode("32423")
                 .WithCity("Test City")
@@ -42,7 +43,7 @@ namespace TestUtils
 
         private static IPerson CreateTestPerson(uint id, Color colour)
         {
-            IPersonBuilder personBuilder = PersonBuilder.Create();
+            IPersonBuilder personBuilder = new PersonBuilderFactory().Create();
             return personBuilder
                 .WithID(id)
                 .WithName("test")

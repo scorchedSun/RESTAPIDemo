@@ -334,3 +334,6 @@ ASALocalRun/
 
 # SonarLint
 .sonarlint/
+
+# Coverlet code coverage
+*.opencover.xml
