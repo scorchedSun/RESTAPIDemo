@@ -4,6 +4,7 @@ using System;
 
 namespace RESTAPIDemo
 {
+    // Source: https://dev.to/cwetanow/wiring-up-ninject-with-aspnet-core-20-3hp
     public sealed class RequestScopingStartupFilter : IStartupFilter
     {
         private readonly Func<IDisposable> requestScopeProvider;

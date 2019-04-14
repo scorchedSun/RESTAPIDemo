@@ -9,6 +9,7 @@ using Ninject;
 
 namespace RESTAPIDemo
 {
+    // Source: https://dev.to/cwetanow/wiring-up-ninject-with-aspnet-core-20-3hp
     public static class ApplicationBuilderExtensions
     {
         public static void BindToMethod<T>(this IKernel config, Func<T> method)

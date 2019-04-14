@@ -6,6 +6,7 @@ using System;
 
 namespace RESTAPIDemo
 {
+    // Source: https://dev.to/cwetanow/wiring-up-ninject-with-aspnet-core-20-3hp
     public static class AspNetCoreExtensions
     {
         public static void AddRequestScopingMiddleware(

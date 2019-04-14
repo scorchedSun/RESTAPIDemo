@@ -19,6 +19,13 @@ using Repositories;
 
 namespace RESTAPIDemo
 {
+    /// <summary>
+    /// Startup class
+    /// </summary>
+    /// <remarks>
+    /// Wiring up Ninject to the application made possible by this tutorial: https://dev.to/cwetanow/wiring-up-ninject-with-aspnet-core-20-3hp
+    /// </remarks>
+
     public class Startup
     {
         private sealed class Scope : DisposableObject { }

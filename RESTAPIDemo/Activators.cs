@@ -5,6 +5,7 @@ using System;
 
 namespace RESTAPIDemo
 {
+    // Source: https://dev.to/cwetanow/wiring-up-ninject-with-aspnet-core-20-3hp
     public sealed class DelegatingControllerActivator : IControllerActivator
     {
         private readonly Func<ControllerContext, object> controllerCreator;
@@ -24,6 +25,7 @@ namespace RESTAPIDemo
             => controllerReleaser(context, controller);
     }
 
+    // Source: https://dev.to/cwetanow/wiring-up-ninject-with-aspnet-core-20-3hp
     public sealed class DelegatingViewComponentActivator : IViewComponentActivator
     {
         private readonly Func<Type, object> viewComponentCreator;
