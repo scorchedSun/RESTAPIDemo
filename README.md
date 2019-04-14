@@ -11,7 +11,7 @@ GET api/persons/color/{colour} - Returns all persons having the same favourite c
 
 **Example result**
 
-GET api/persons/{id}
+GET api/persons/1
 ```json    
 {  
     "id":1,  
