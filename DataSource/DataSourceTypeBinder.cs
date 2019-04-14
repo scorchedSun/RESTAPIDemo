@@ -49,13 +49,13 @@ namespace DataSource
             if (kernel is null) throw new ArgumentNullException(nameof(kernel));
 
             string dataSourceId = dataSourceTypeIds[typeof(T)];
-            string dataSourceType = DataSourceConfiguration.GetConfiguredType(this.configuration, dataSourceId);
+            string dataSourceType = DataSourceConfiguration.GetConfiguredType(configuration, dataSourceId);
             if (!IsDataSourceTypeValid(dataSourceType))
                 throw new InvalidDataSourceTypeException(dataSourceId, dataSourceType);
 
             DataSourceAssembly dataSourceAssembly = new DataSourceAssembly(dataSourceType);
             DataSourceConfigurationCreator configurationCreator = new DataSourceConfigurationCreator(dataSourceAssembly);
-            object config = configurationCreator.Create(this.configuration, dataSourceId);
+            object config = configurationCreator.Create(configuration, dataSourceId);
 
             kernel.Bind(dataSourceAssembly.TypeOfConfigurationInterface).ToConstant(config).Named(typeof(T).Name);
             kernel.Load(dataSourceAssembly.UnderlyingAssembly);

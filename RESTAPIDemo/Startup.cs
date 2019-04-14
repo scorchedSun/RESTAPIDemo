@@ -122,8 +122,16 @@ namespace RESTAPIDemo
             kernel.Bind<IAddressBuilderFactory>().To(typeof(AddressBuilderFactory));
             kernel.Bind<IPersonRepository>().To(typeof(PersonRepository));
 
-            DataSourceTypeBinder binder = new DataSourceTypeBinder(new Dictionary<string, string>(Configuration.AsEnumerable()));
-            return binder.Bind<IPerson>(kernel);
+            try
+            {
+                DataSourceTypeBinder binder = new DataSourceTypeBinder(new Dictionary<string, string>(Configuration.AsEnumerable()));
+                return binder.Bind<IPerson>(kernel);
+            }
+            catch (Exception ex)
+            {
+                logger.Log(ex);
+                throw;
+            }
         }
     }
 }
