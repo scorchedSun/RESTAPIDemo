@@ -22,3 +22,10 @@ GET api/persons/1
     "color":"yellow"  
 }
 ```
+## Tools used
+
+* Visual Studio 2019
+* [Roslynator](https://github.com/JosefPihrt/Roslynator/blob/master/README.md)
+* [Ninject](https://github.com/ninject/Ninject/blob/master/README.md)
+* [SonarQube](https://www.sonarqube.org/)
+* [Stryker.NET](https://github.com/stryker-mutator/stryker-net/blob/master/README.md)
